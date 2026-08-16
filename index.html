@@ -1,0 +1,804 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>سكونز للحلويات - سكر زمان</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        camel: '#C19A6B',
+                        beige: '#F5F5DC',
+                        logoGold: '#ca8a04',
+                        chocoDark: '#2E1503',
+                        chocoLight: '#4A2511',
+                        caramel: '#D97706',
+                        fb: '#1877F2',
+                        wa: '#25D366'
+                    }
+                }
+            }
+        }
+    </script>
+
+    <style>
+        body {
+            font-family: 'Cairo', sans-serif;
+            background-color: #2E1503;
+            color: #F5F5DC;
+            background-image: url('https://res.cloudinary.com/dbahe7lxz/image/upload/q_auto,f_auto/v1786908834/idraaak/c4xtuzvofqwh0xbcyxet.jpg');
+            background-size: cover;
+            background-position: center;
+            background-attachment: fixed;
+            scroll-behavior: smooth;
+            overflow-x: hidden;
+        }
+
+        .bg-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: linear-gradient(to bottom, rgba(46, 21, 3, 0.92), rgba(26, 9, 0, 0.98));
+            z-index: -1;
+        }
+
+        .title-font {
+            font-family: 'Aref Ruqaa', serif;
+        }
+
+        .neon-text {
+            color: #fff;
+            text-shadow: 0 0 10px #ca8a04, 0 0 20px #ca8a04, 0 0 40px #D97706;
+            animation: pulseNeon 2s ease-in-out infinite alternate;
+        }
+        @keyframes pulseNeon {
+            0% { text-shadow: 0 0 10px #ca8a04, 0 0 20px #ca8a04; }
+            100% { text-shadow: 0 0 15px #F5F5DC, 0 0 30px #ca8a04, 0 0 50px #D97706; }
+        }
+
+        /* --------------------------------------
+           نافذة التواصل (حركات الدخول والخروج)
+        --------------------------------------- */
+        #social-modal-overlay {
+            transition: opacity 0.4s ease;
+            opacity: 0;
+        }
+        #social-modal {
+            /* حركة Bounce سلسة جداً */
+            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
+            transform: translate(-50%, -50%) scale(0.5);
+            opacity: 0;
+        }
+        .modal-active {
+            transform: translate(-50%, -50%) scale(1) !important;
+            opacity: 1 !important;
+        }
+        .overlay-active {
+            opacity: 1 !important;
+        }
+
+        /* تأثير نبض خفيف للزر العائم */
+        @keyframes pulse-btn {
+            0% { box-shadow: 0 0 0 0 rgba(217,119,6,0.7); }
+            70% { box-shadow: 0 0 0 15px rgba(217,119,6,0); }
+            100% { box-shadow: 0 0 0 0 rgba(217,119,6,0); }
+        }
+        .fab-btn {
+            animation: pulse-btn 2s infinite;
+        }
+        .fab-btn:hover {
+            animation: none;
+        }
+
+        /* أنوار الليد للأقسام */
+        .led-border {
+            position: relative;
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.6));
+            will-change: transform;
+        }
+        .led-border:hover {
+            transform: translateY(-15px) scale(1.05);
+            filter: drop-shadow(0 15px 25px rgba(217, 119, 6, 0.6));
+            z-index: 10;
+        }
+        .led-border::before {
+            content: '';
+            position: absolute;
+            top: -50%; left: -50%;
+            width: 200%; height: 200%;
+            background: conic-gradient(transparent, transparent, #F5F5DC, #ca8a04, #D97706, transparent);
+            animation: rotateLed 3s linear infinite;
+            z-index: 0;
+        }
+        .led-content {
+            position: absolute;
+            inset: 6px;
+            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
+            z-index: 1;
+            overflow: hidden;
+            background-color: #2E1503;
+            transition: border-radius 0.5s ease;
+        }
+        .led-border:hover .led-content {
+            border-radius: 30% 70% 50% 50% / 50% 30% 70% 50%;
+        }
+        @keyframes rotateLed { 100% { transform: rotate(360deg); } }
+
+        /* كروت الأصناف */
+        .menu-item-card {
+            background: linear-gradient(145deg, #4A2511, #3a1d0d);
+            border: 2px dashed #ca8a04;
+            border-radius: 20px 0 20px 0;
+            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            position: relative;
+            overflow: hidden;
+        }
+        .menu-item-card::after {
+            content: '';
+            position: absolute;
+            top: 0; left: -100%;
+            width: 50%; height: 100%;
+            background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
+            transform: skewX(-20deg);
+            transition: 0.5s;
+        }
+        .menu-item-card:hover {
+            transform: translateY(-5px);
+            border-style: solid;
+            box-shadow: 0 10px 20px rgba(217, 119, 6, 0.3);
+        }
+        .menu-item-card:hover::after { left: 200%; }
+
+        .add-btn {
+            background: linear-gradient(45deg, #ca8a04, #D97706);
+            border-radius: 50px;
+            box-shadow: 0 4px 15px rgba(202, 138, 4, 0.4);
+            transition: all 0.3s ease;
+        }
+        .add-btn:hover {
+            transform: scale(1.05);
+            box-shadow: 0 6px 20px rgba(202, 138, 4, 0.6);
+            filter: brightness(1.1);
+        }
+
+        .floating-emoji {
+            position: fixed;
+            bottom: -10vh;
+            font-size: 2.5rem;
+            opacity: 0.2;
+            z-index: -1;
+            pointer-events: none;
+            animation: floatup linear infinite;
+            will-change: transform, opacity;
+        }
+        @keyframes floatup {
+            0% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0; }
+            10% { opacity: 0.3; }
+            90% { opacity: 0.3; }
+            100% { transform: translate3d(50px, -120vh, 0) rotate(360deg); opacity: 0; }
+        }
+
+        .menu-container {
+            background: rgba(46, 21, 3, 0.95);
+            border: 3px solid #D97706;
+            border-radius: 2rem;
+            padding: 2rem;
+            display: none;
+            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
+            position: relative;
+        }
+        @keyframes popIn {
+            from { opacity: 0; transform: scale(0.9) translateY(20px); }
+            to { opacity: 1; transform: scale(1) translateY(0); }
+        }
+
+        .nav-scrolled {
+            background-color: rgba(46, 21, 3, 0.98);
+            border-bottom: 2px dashed rgba(217, 119, 6, 0.5);
+            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
+        }
+
+        ::-webkit-scrollbar { width: 8px; }
+        ::-webkit-scrollbar-track { background: #2E1503; }
+        ::-webkit-scrollbar-thumb { background: #D97706; border-radius: 10px; }
+        ::-webkit-scrollbar-thumb:hover { background: #ca8a04; }
+        
+        #cart-sidebar { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
+        .cart-open { transform: translateX(0) !important; }
+        @keyframes cartBump {
+            0%, 100% { transform: scale(1); }
+            50% { transform: scale(1.4) rotate(-10deg); color: #fff; }
+        }
+        .cart-bump { animation: cartBump 0.5s ease-out; }
+    </style>
+</head>
+<body class="antialiased">
+
+    <div class="bg-overlay"></div>
+    <div id="floating-container"></div>
+
+    <div id="toast" class="fixed top-24 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-green-600 to-green-500 text-white px-8 py-4 rounded-full shadow-[0_10px_30px_rgba(34,197,94,0.4)] font-bold z-[100] opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-3 text-lg border-2 border-green-400">
+        <i class="fa-solid fa-cookie-bite text-2xl"></i> تمت الإضافة للسلة بنجاح
+    </div>
+
+    <!-- زر التواصل العائم -->
+    <div class="fixed bottom-6 right-6 z-[60]">
+        <button onclick="toggleSocialModal()" class="fab-btn w-16 h-16 bg-gradient-to-tr from-caramel to-logoGold text-chocoDark rounded-full text-3xl shadow-[0_0_20px_rgba(217,119,6,0.6)] hover:scale-110 hover:rotate-12 transition-transform flex justify-center items-center border-2 border-beige">
+            <i class="fa-regular fa-comment-dots"></i>
+        </button>
+    </div>
+
+    <!-- نافذة التواصل المنبثقة (بأشكال وحركات جديدة للأزرار) -->
+    <div id="social-modal-overlay" class="fixed inset-0 bg-black/80 z-[80] hidden backdrop-blur-sm" onclick="toggleSocialModal()"></div>
+    <div id="social-modal" class="fixed top-1/2 left-1/2 bg-chocoDark border-4 border-dashed border-caramel rounded-3xl p-6 z-[90] hidden shadow-2xl w-[90%] max-w-sm text-center">
+        <button onclick="toggleSocialModal()" class="absolute top-4 right-4 text-beige/50 hover:text-red-500 text-2xl transition-transform hover:scale-110 hover:rotate-90"><i class="fa-solid fa-times"></i></button>
+        <h3 class="text-3xl font-black text-logoGold mb-8 mt-2 title-font">تواصل معنا</h3>
+        
+        <div class="flex flex-col gap-6">
+            <!-- قسم الفيسبوك المطور -->
+            <div class="group flex flex-col items-center gap-4 bg-gradient-to-br from-fb/10 to-transparent p-5 rounded-3xl border-2 border-fb/30 hover:border-fb transition-all duration-300">
+                <div class="bg-fb p-3 rounded-full text-white shadow-[0_0_15px_rgba(24,119,242,0.6)] group-hover:scale-110 transition-transform duration-300">
+                    <i class="fa-brands fa-facebook-f text-3xl w-6 h-6 flex items-center justify-center"></i>
+                </div>
+                <div class="flex flex-col gap-3 w-full">
+                    <a href="https://www.facebook.com/share/18ywRDfP27/" target="_blank" class="w-full relative overflow-hidden bg-chocoDark border border-fb/50 hover:bg-fb hover:text-white text-beige py-3 rounded-xl text-lg font-bold transition-all duration-300 shadow-md group/btn flex justify-center items-center gap-2">
+                        <span>تابع صفحتنا 1</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-sm opacity-0 group-hover/btn:opacity-100 transition-opacity"></i>
+                    </a>
+                    <a href="https://www.facebook.com/share/1BYeYhqNsU/" target="_blank" class="w-full relative overflow-hidden bg-chocoDark border border-fb/50 hover:bg-fb hover:text-white text-beige py-3 rounded-xl text-lg font-bold transition-all duration-300 shadow-md group/btn flex justify-center items-center gap-2">
+                        <span>تابع صفحتنا 2</span>
+                        <i class="fa-solid fa-arrow-up-right-from-square text-sm opacity-0 group-hover/btn:opacity-100 transition-opacity"></i>
+                    </a>
+                </div>
+            </div>
+
+            <!-- قسم الواتساب المطور -->
+            <div class="group flex flex-col items-center gap-4 bg-gradient-to-br from-wa/10 to-transparent p-5 rounded-3xl border-2 border-wa/30 hover:border-wa transition-all duration-300">
+                <div class="bg-wa p-3 rounded-full text-white shadow-[0_0_15px_rgba(37,211,102,0.6)] group-hover:scale-110 transition-transform duration-300">
+                    <i class="fa-brands fa-whatsapp text-3xl w-6 h-6 flex items-center justify-center"></i>
+                </div>
+                <div class="flex flex-col gap-3 w-full">
+                    <a href="https://wa.me/201029973960" target="_blank" class="w-full bg-chocoDark border border-wa/50 hover:bg-wa hover:text-white text-beige py-3 rounded-xl text-lg font-bold transition-all duration-300 shadow-md group/btn flex justify-center items-center gap-2">
+                        <span>فرع أسوان</span>
+                        <i class="fa-brands fa-whatsapp text-xl opacity-0 group-hover/btn:opacity-100 transition-opacity"></i>
+                    </a>
+                    <a href="https://wa.me/201029973959" target="_blank" class="w-full bg-chocoDark border border-wa/50 hover:bg-wa hover:text-white text-beige py-3 rounded-xl text-lg font-bold transition-all duration-300 shadow-md group/btn flex justify-center items-center gap-2">
+                        <span>فرع كوم أمبو</span>
+                        <i class="fa-brands fa-whatsapp text-xl opacity-0 group-hover/btn:opacity-100 transition-opacity"></i>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- سلة المشتريات الجانبية -->
+    <div id="cart-overlay" class="fixed inset-0 bg-black/70 z-[70] hidden transition-opacity backdrop-blur-sm" onclick="toggleCart()"></div>
+    <div id="cart-sidebar" class="fixed top-0 right-0 w-[400px] max-w-[85vw] h-full bg-chocoDark border-l-4 border-dashed border-caramel z-[80] translate-x-full flex flex-col shadow-[0_0_40px_rgba(0,0,0,0.8)]">
+        <div class="p-6 border-b-2 border-caramel/40 flex justify-between items-center bg-chocoLight/80">
+            <h2 class="text-logoGold text-3xl font-black title-font drop-shadow-md"><i class="fa-solid fa-basket-shopping ml-2"></i> سلة طلباتي</h2>
+            <button onclick="toggleCart()" class="text-beige/50 hover:text-red-500 transition text-2xl bg-chocoDark w-10 h-10 rounded-full border border-caramel/30 flex items-center justify-center hover:scale-110">
+                <i class="fa-solid fa-times"></i>
+            </button>
+        </div>
+        
+        <div id="cart-items" class="flex-1 overflow-y-auto p-5 flex flex-col gap-4">
+            <div class="text-center text-beige/40 mt-20 text-xl font-bold flex flex-col items-center gap-4">
+                <i class="fa-solid fa-cookie text-5xl opacity-50"></i>
+                السلة فارغة حالياً
+            </div>
+        </div>
+        
+        <div class="p-6 border-t-2 border-caramel/40 bg-chocoLight/90">
+            <div class="flex justify-between items-center mb-6 text-2xl font-black bg-chocoDark p-4 rounded-xl border border-caramel/30">
+                <span class="text-beige">الإجمالي:</span>
+                <span id="cart-total" class="text-logoGold text-3xl">0 <span class="text-sm font-normal">ج.م</span></span>
+            </div>
+            <input type="text" id="customer-name" placeholder="👤 اكتب اسمك هنا..." class="w-full mb-4 px-5 py-4 bg-chocoDark border-2 border-caramel/50 rounded-xl text-beige font-bold focus:outline-none focus:border-logoGold transition text-lg placeholder-beige/40 shadow-inner">
+            
+            <select id="branch-select" class="w-full mb-6 px-5 py-4 bg-chocoDark border-2 border-caramel/50 rounded-xl text-beige font-bold focus:outline-none focus:border-logoGold transition appearance-none text-lg shadow-inner cursor-pointer">
+                <option value="فرع أسوان - حي العقاد">📍 فرع أسوان - حي العقاد</option>
+                <option value="فرع أسوان - كوم أمبو">📍 فرع أسوان - كوم أمبو</option>
+            </select>
+
+            <div class="flex gap-3">
+                <button onclick="checkout('01029973960')" class="flex-1 bg-gradient-to-r from-wa to-green-500 hover:from-green-500 hover:to-green-400 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition shadow-[0_5px_15px_rgba(34,197,94,0.4)] hover:scale-[1.02]">
+                    لأسوان <i class="fa-brands fa-whatsapp text-2xl"></i>
+                </button>
+                <button onclick="checkout('01029973959')" class="flex-1 bg-gradient-to-r from-wa to-green-500 hover:from-green-500 hover:to-green-400 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition shadow-[0_5px_15px_rgba(34,197,94,0.4)] hover:scale-[1.02]">
+                    لكوم أمبو <i class="fa-brands fa-whatsapp text-2xl"></i>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- شريط التنقل -->
+    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-4 bg-transparent text-beige">
+        <div class="container mx-auto px-4 md:px-8 flex flex-wrap justify-between items-center gap-4">
+            <a href="#" class="flex items-center gap-3">
+                <div class="relative">
+                    <img src="https://res.cloudinary.com/dbahe7lxz/image/upload/q_auto,f_auto,w_150/v1786911357/idraaak/tgylfwmhztwkgth1upm8.jpg" alt="سكونز" class="h-16 w-16 md:h-20 md:w-20 rounded-full border-4 border-caramel object-cover shadow-[0_0_20px_rgba(217,119,6,0.6)] z-10 relative bg-chocoDark">
+                </div>
+            </a>
+
+            <!-- البحث -->
+            <div class="flex-grow max-w-xl order-3 md:order-2 w-full md:w-auto relative group">
+                <input type="text" id="searchInput" placeholder="ابحث عن صنفك المفضل..." 
+                       class="w-full bg-chocoDark/95 border-2 border-caramel/70 text-beige px-6 py-3 rounded-full focus:outline-none focus:border-logoGold transition-all placeholder-beige/50 text-lg font-bold shadow-[0_5px_15px_rgba(0,0,0,0.5)] pr-12">
+                <i class="fas fa-search absolute right-5 top-1/2 transform -translate-y-1/2 text-logoGold text-xl"></i>
+                
+                <div id="search-dropdown" class="absolute w-full mt-3 bg-chocoLight/95 backdrop-blur-md border-2 border-caramel rounded-2xl shadow-2xl hidden max-h-[50vh] overflow-y-auto z-50 p-2">
+                    <div id="search-results-grid" class="flex flex-col gap-2"></div>
+                </div>
+            </div>
+
+            <!-- زر السلة -->
+            <div class="order-2 md:order-3">
+                <button onclick="toggleCart()" id="nav-cart-btn" class="relative text-chocoDark bg-gradient-to-tr from-caramel to-logoGold hover:from-logoGold hover:to-caramel transition p-3 md:p-4 rounded-full border-2 border-beige shadow-[0_0_15px_rgba(217,119,6,0.6)]">
+                    <i class="fa-solid fa-basket-shopping text-2xl md:text-3xl"></i>
+                    <span id="nav-cart-count" class="absolute -top-2 -right-2 bg-red-600 text-white text-sm font-black w-7 h-7 flex items-center justify-center rounded-full border-2 border-white shadow-lg">0</span>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <section id="hero" class="relative min-h-[50vh] md:min-h-[60vh] flex flex-col items-center justify-center px-4 text-center pt-28 pb-10">
+        <h1 class="text-7xl md:text-[120px] lg:text-[180px] font-black neon-text title-font mb-4 tracking-wider">سكونز</h1>
+        <!-- تم تغيير الجملة هنا -->
+        <p class="text-4xl md:text-6xl text-caramel font-bold drop-shadow-lg title-font mt-[-10px] md:mt-[-20px]">سكر زمان</p>
+    </section>
+
+    <main class="container mx-auto px-4 md:px-8 pb-20 flex flex-col items-center">
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 w-full max-w-6xl mb-16">
+            
+            <div class="led-border h-72 md:h-[400px] group" onclick="showCategory('oriental')">
+                <div class="led-content">
+                    <img src="https://res.cloudinary.com/dbahe7lxz/image/upload/q_auto,f_auto,w_800/v1786918048/idraaak/kvjtlayfnlwc9phrbnh9.jpg" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100">
+                    <div class="absolute inset-0 bg-gradient-to-t from-chocoDark via-chocoDark/40 to-transparent"></div>
+                    <div class="absolute bottom-10 left-0 w-full flex items-center justify-center">
+                        <h3 class="text-5xl md:text-6xl font-black text-beige drop-shadow-[0_5px_15px_rgba(0,0,0,1)] title-font tracking-wide">الشرقي</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="led-border h-72 md:h-[400px] group" onclick="showCategory('cakes')">
+                <div class="led-content">
+                    <img src="https://res.cloudinary.com/dbahe7lxz/image/upload/q_auto,f_auto,w_800/v1786918217/idraaak/fycuk0t9ieamup9yh0jg.jpg" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100">
+                    <div class="absolute inset-0 bg-gradient-to-t from-chocoDark via-chocoDark/40 to-transparent"></div>
+                    <div class="absolute bottom-10 left-0 w-full flex items-center justify-center">
+                        <h3 class="text-5xl md:text-6xl font-black text-beige drop-shadow-[0_5px_15px_rgba(0,0,0,1)] title-font tracking-wide">التورت</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="led-border h-72 md:h-[400px] group" onclick="showCategory('western')">
+                <div class="led-content">
+                    <img src="https://res.cloudinary.com/dbahe7lxz/image/upload/q_auto,f_auto,w_800/v1786918567/idraaak/lo9qq0l32xcf7wy4m2un.jpg" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100">
+                    <div class="absolute inset-0 bg-gradient-to-t from-chocoDark via-chocoDark/40 to-transparent"></div>
+                    <div class="absolute bottom-10 left-0 w-full flex items-center justify-center">
+                        <h3 class="text-5xl md:text-6xl font-black text-beige drop-shadow-[0_5px_15px_rgba(0,0,0,1)] title-font tracking-wide">الغربي</h3>
+                    </div>
+                </div>
+            </div>
+
+            <div class="led-border h-72 md:h-[400px] group" onclick="showCategory('bakery')">
+                <div class="led-content">
+                    <img src="https://res.cloudinary.com/dbahe7lxz/image/upload/q_auto,f_auto,w_800/v1786918390/idraaak/y5jx1wsapyojcpapxisc.jpg" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100">
+                    <div class="absolute inset-0 bg-gradient-to-t from-chocoDark via-chocoDark/40 to-transparent"></div>
+                    <div class="absolute bottom-10 left-0 w-full flex items-center justify-center">
+                        <h3 class="text-5xl md:text-6xl font-black text-beige drop-shadow-[0_5px_15px_rgba(0,0,0,1)] title-font tracking-wide">المخبوزات</h3>
+                    </div>
+                </div>
+            </div>
+
+        </div>
+
+        <div id="display-area" class="w-full max-w-6xl">
+            
+            <div id="menu-content" class="menu-container w-full">
+                <div class="flex justify-between items-center mb-10 border-b-4 border-dashed border-caramel/40 pb-6 relative">
+                    <h3 id="category-title" class="text-4xl md:text-5xl font-black text-logoGold title-font"></h3>
+                    <button onclick="closeCategory()" class="text-beige/70 hover:text-white hover:bg-red-600 transition-all p-3 bg-chocoDark rounded-full border-2 border-caramel shadow-lg absolute -top-8 -left-2 md:static">
+                        <i class="fa-solid fa-xmark text-2xl flex items-center justify-center w-6 h-6"></i>
+                    </button>
+                </div>
+                <div id="items-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
+            </div>
+            
+            <div id="cakes-content" class="menu-container w-full">
+                <div class="flex justify-between items-center mb-10 border-b-4 border-dashed border-caramel/40 pb-6 relative">
+                    <h3 class="text-4xl md:text-5xl font-black text-logoGold title-font flex items-center gap-4">
+                        <i class="fa-solid fa-cake-candles text-caramel"></i> التورت
+                    </h3>
+                    <button onclick="closeCategory()" class="text-beige/70 hover:text-white hover:bg-red-600 transition-all p-3 bg-chocoDark rounded-full border-2 border-caramel shadow-lg absolute -top-8 -left-2 md:static">
+                        <i class="fa-solid fa-xmark text-2xl flex items-center justify-center w-6 h-6"></i>
+                    </button>
+                </div>
+                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                    <div class="bg-chocoDark p-6 rounded-3xl border-2 border-caramel/30 shadow-inner">
+                        <div class="flex items-center gap-3 mb-6 bg-chocoLight p-3 rounded-xl border border-caramel/50">
+                            <div class="w-6 h-6 bg-logoGold border-2 border-beige"></div>
+                            <h4 class="text-2xl font-bold text-beige">تورت مربعة</h4>
+                        </div>
+                        <div id="cakes-square" class="flex flex-col gap-4"></div>
+                    </div>
+                    <div class="bg-chocoDark p-6 rounded-3xl border-2 border-caramel/30 shadow-inner">
+                        <div class="flex items-center gap-3 mb-6 bg-chocoLight p-3 rounded-xl border border-caramel/50">
+                            <div class="w-6 h-6 bg-logoGold border-2 border-beige rounded-full"></div>
+                            <h4 class="text-2xl font-bold text-beige">تورت مدورة</h4>
+                        </div>
+                        <div id="cakes-round" class="flex flex-col gap-4"></div>
+                    </div>
+                    <div class="bg-chocoDark p-6 rounded-3xl border-2 border-caramel/30 shadow-inner">
+                        <div class="flex items-center gap-3 mb-6 bg-chocoLight p-3 rounded-xl border border-caramel/50">
+                            <i class="fa-solid fa-heart text-2xl text-logoGold"></i>
+                            <h4 class="text-2xl font-bold text-beige">تورت الأشكال</h4>
+                        </div>
+                        <div id="cakes-shapes" class="flex flex-col gap-4"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+    </main>
+
+    <footer class="bg-chocoDark border-t-4 border-dashed border-logoGold text-beige pt-16 pb-8 text-center mt-10 relative">
+        <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-chocoDark px-6 py-2 border-4 border-dashed border-logoGold rounded-full">
+            <i class="fa-solid fa-star text-logoGold text-2xl"></i>
+        </div>
+        <img src="https://res.cloudinary.com/dbahe7lxz/image/upload/q_auto,f_auto,w_150/v1786911357/idraaak/tgylfwmhztwkgth1upm8.jpg" alt="لوجو سكونز" class="h-24 w-24 mx-auto rounded-full border-4 border-logoGold object-cover shadow-[0_0_20px_rgba(202,138,4,0.6)] mb-4">
+        <h2 class="text-4xl font-black text-logoGold mb-2 title-font">سكونز</h2>
+        <p class="text-lg text-beige/80 mb-6">صُنع بحب.. من أجلكم</p>
+        <p class="text-sm font-bold text-beige/50">&copy; 2026 سكونز للحلويات والمخبوزات. جميع الحقوق محفوظة.</p>
+    </footer>
+
+    <script>
+        const menuData = {
+            oriental: { title: "الحلويات الشرقية", items: [
+                { name: "بسبوسة سادة", price: 150 }, { name: "بسبوسة قشطة", price: 240 }, { name: "بسبوسة تركي", price: 240 },
+                { name: "بسيمة - هريسة", price: 240 }, { name: "اساور فستق", price: 260 }, { name: "اساور لوز", price: 260 },
+                { name: "اساور نوتيلا", price: 240 }, { name: "بورمة مكسرات", price: 260 }, { name: "رواني - بلح الشام", price: 240 },
+                { name: "بلح الشام قشطة", price: 240 }, { name: "بقلاوة كريمة", price: 260 }, { name: "بقلاوة مكسرات", price: 240 },
+                { name: "بقلاوة حليب", price: 240 }, { name: "بقلاوة سادة", price: 240 }, { name: "رموش", price: 240 },
+                { name: "رموش مكسرات", price: 260 }, { name: "رموش مشكل", price: 240 }, { name: "مشكل صيامي", price: 240 },
+                { name: "شرقي مشكل - لوكس", price: 240 }, { name: "سكينة جوز هند - عجوة", price: 240 }, { name: "قطايف مكسرات", price: 260 },
+                { name: "قطايف كريمة", price: 240 }, { name: "كنافة ساده - عزيزية", price: 240 }, { name: "كنافة قشطة مانجا", price: 240 },
+                { name: "كنافة قشطة", price: 240 }, { name: "كنافة مكسرات", price: 260 }, { name: "كنافة صوابع", price: 240 },
+                { name: "كنافة كريمة", price: 240 }, { name: "كنافة نوتيلا - لوتس", price: 240 }, { name: "لقمة القاضي", price: 240 },
+                { name: "حبيبة - مدلعة", price: 240 }
+            ]},
+            cakes: { title: "التورت", 
+                square: [
+                    { name: "مربع 20*20", price: 390 }, { name: "مربع 24*24", price: 470 }, { name: "مربع 30*20", price: 470 },
+                    { name: "مربع 30*30", price: 650 }, { name: "مربع 40*30", price: 800 }, { name: "مربع 40*40", price: 950 },
+                    { name: "مربع 60*40", price: 1550 }
+                ],
+                round: [
+                    { name: "تورتة ميني", price: 150 }, { name: "مقاس 10", price: 150 }, { name: "مقاس 15", price: 190 },
+                    { name: "مقاس 16", price: 220 }, { name: "مقاس 18", price: 250 }, { name: "مقاس 20", price: 320 },
+                    { name: "مقاس 22", price: 380 }, { name: "مقاس 24", price: 420 }, { name: "مقاس 26", price: 460 },
+                    { name: "مقاس 28", price: 520 }, { name: "مقاس 30", price: 650 }
+                ],
+                shapes: [
+                    { name: "تورتة 2 دور", price: 1300 }, { name: "تورتة 3 دور", price: 1600 }, { name: "منجاوي كبير", price: 590 },
+                    { name: "منجاوي وسط", price: 450 }, { name: "بيضاوي كبير", price: 590 }, { name: "بيضاوي وسط", price: 450 },
+                    { name: "قلب كبير", price: 590 }, { name: "قلب وسط", price: 450 }, { name: "قلب صغير", price: 340 }
+                ]
+            },
+            western: { title: "الحلويات الغربية", items: [
+                { name: "اكلير", price: 35 }, { name: "ملفيه", price: 50 }, { name: "براونيز", price: 50 }, { name: "هوهوز", price: 35 },
+                { name: "ديسباسيتو", price: 65 }, { name: "بيفتيرول", price: 45 }, { name: "فادج", price: 50 }, { name: "شطرنج", price: 40 },
+                { name: "قشطوطة", price: 90 }, { name: "انديان", price: 50 }, { name: "ريد", price: 50 }, { name: "موس", price: 50 },
+                { name: "هرم", price: 35 }, { name: "تارت", price: 50 }, { name: "قنبلة", price: 40 }, { name: "تشيز كيك", price: 50 },
+                { name: "جاتو لوكس", price: 30 }, { name: "طاجن أم علي", price: 50 }, { name: "انجلش كيك", price: 80 },
+                { name: "طاجن نوتيلا", price: 70 }, { name: "مولتن كبير", price: 85 }, { name: "مولتن صغير", price: 60 }
+            ]},
+            bakery: { title: "المخبوزات", items: [
+                { name: "كعك ملبن", price: 225 }, { name: "كعك سادة", price: 225 }, { name: "كعك عجوة", price: 225 }, { name: "كعك مكسرات", price: 225 },
+                { name: "غريبة", price: 225 }, { name: "برازق", price: 225 }, { name: "سابلية", price: 260 }, { name: "لانكشير", price: 225 },
+                { name: "بسكويت زبدة", price: 225 }, { name: "بسكويت نشادر", price: 225 }, { name: "بسكويت برتقال", price: 225 },
+                { name: "بسكويت شيكولاتة", price: 225 }, { name: "كوكيز أبيض", price: 225 }, { name: "كوكيز شيكولاتة", price: 225 },
+                { name: "بيتي فور سادة", price: 225 }, { name: "بيتي فور مكسرات", price: 260 }
+            ]}
+        };
+
+        const AudioContext = window.AudioContext || window.webkitAudioContext;
+        let audioCtx;
+
+        function playClickSound() {
+            try {
+                if (!audioCtx) audioCtx = new AudioContext();
+                if (audioCtx.state === 'suspended') audioCtx.resume();
+                
+                const oscillator = audioCtx.createOscillator();
+                const gainNode = audioCtx.createGain();
+                
+                oscillator.type = 'sine';
+                oscillator.frequency.setValueAtTime(800, audioCtx.currentTime); 
+                gainNode.gain.setValueAtTime(0.03, audioCtx.currentTime);
+                gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
+                
+                oscillator.connect(gainNode);
+                gainNode.connect(audioCtx.destination);
+                oscillator.start();
+                oscillator.stop(audioCtx.currentTime + 0.1);
+            } catch(e) { }
+        }
+
+        let cart = [];
+
+        function addToCart(name, price) {
+            playClickSound();
+            let item = cart.find(i => i.name === name);
+            if (item) {
+                item.qty++;
+            } else {
+                cart.push({ name, price, qty: 1 });
+            }
+            updateCartUI();
+            showToast();
+            
+            const cartBtn = document.getElementById('nav-cart-btn');
+            cartBtn.classList.remove('cart-bump');
+            void cartBtn.offsetWidth; 
+            cartBtn.classList.add('cart-bump');
+        }
+
+        let toastTimeout;
+        function showToast() {
+            const toast = document.getElementById('toast');
+            toast.classList.remove('opacity-0', 'translate-y-[-20px]');
+            toast.classList.add('opacity-100', 'translate-y-0');
+            clearTimeout(toastTimeout);
+            toastTimeout = setTimeout(() => {
+                toast.classList.remove('opacity-100', 'translate-y-0');
+                toast.classList.add('opacity-0', 'translate-y-[-20px]');
+            }, 2500);
+        }
+
+        function changeQty(index, change) {
+            playClickSound();
+            cart[index].qty += change;
+            if (cart[index].qty <= 0) {
+                cart.splice(index, 1);
+            }
+            updateCartUI();
+        }
+
+        function updateCartUI() {
+            const navCartCount = document.getElementById('nav-cart-count');
+            const cartItemsContainer = document.getElementById('cart-items');
+            const cartTotal = document.getElementById('cart-total');
+
+            let totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
+            navCartCount.innerText = totalQty;
+
+            cartItemsContainer.innerHTML = '';
+            let total = 0;
+            
+            if(cart.length === 0) {
+                cartItemsContainer.innerHTML = `
+                    <div class="text-center text-beige/40 mt-20 text-xl font-bold flex flex-col items-center gap-4">
+                        <i class="fa-solid fa-cookie text-5xl opacity-50"></i>
+                        السلة فارغة حالياً
+                    </div>`;
+            } else {
+                cart.forEach((item, index) => {
+                    let itemTotal = item.price * item.qty;
+                    total += itemTotal;
+                    cartItemsContainer.innerHTML += `
+                        <div class="flex justify-between items-center bg-chocoDark p-4 rounded-2xl border border-caramel/40 shadow-md">
+                            <div>
+                                <h4 class="text-beige font-bold text-lg mb-1">${item.name}</h4>
+                                <p class="text-logoGold font-black">${item.price} ج</p>
+                            </div>
+                            <div class="flex items-center gap-3 bg-chocoLight rounded-xl p-1 border border-caramel/30 shadow-inner">
+                                <button onclick="changeQty(${index}, 1)" class="text-green-400 hover:bg-chocoDark w-8 h-8 rounded-lg text-xl flex justify-center items-center transition font-bold">+</button>
+                                <span class="text-beige font-black text-lg w-5 text-center">${item.qty}</span>
+                                <button onclick="changeQty(${index}, -1)" class="text-red-400 hover:bg-chocoDark w-8 h-8 rounded-lg text-xl flex justify-center items-center transition font-bold">-</button>
+                            </div>
+                        </div>
+                    `;
+                });
+            }
+            cartTotal.innerHTML = `${total} <span class="text-sm font-normal">ج.م</span>`;
+        }
+
+        function toggleCart() {
+            playClickSound();
+            const sidebar = document.getElementById('cart-sidebar');
+            const overlay = document.getElementById('cart-overlay');
+            sidebar.classList.toggle('cart-open');
+            overlay.classList.toggle('hidden');
+        }
+
+        function checkout(phoneNum) {
+            const name = document.getElementById('customer-name').value.trim();
+            const branch = document.getElementById('branch-select').value;
+
+            if (!name) {
+                const nameInput = document.getElementById('customer-name');
+                nameInput.classList.add('border-red-500', 'ring-2', 'ring-red-500');
+                nameInput.placeholder = "نسيت كتابة اسمك يا فندم!";
+                setTimeout(() => {
+                    nameInput.classList.remove('border-red-500', 'ring-2', 'ring-red-500');
+                    nameInput.placeholder = "👤 اكتب اسمك هنا...";
+                }, 3000);
+                return;
+            }
+            if (cart.length === 0) return;
+
+            let message = `*طلب جديد من سكونز 🎂*\n\n👤 العميل: *${name}*\n📍 الفرع: *${branch}*\n\n🛍️ الطلبات:\n`;
+            let total = 0;
+            cart.forEach(item => {
+                let itemTotal = item.price * item.qty;
+                total += itemTotal;
+                message += `▪️ ${item.name} (الكمية: ${item.qty}) = ${itemTotal} ج\n`;
+            });
+            message += `\n💰 الإجمالي الكلي: *${total} ج.م*`;
+
+            window.open(`https://wa.me/2${phoneNum}?text=${encodeURIComponent(message)}`, '_blank');
+        }
+
+        function createHTMLItem(item) {
+            return `
+                <div class="menu-item-card p-4 flex flex-col gap-3">
+                    <div class="flex justify-between items-center w-full">
+                        <span class="text-lg font-bold text-beige">${item.name}</span>
+                        <div class="bg-chocoDark px-3 py-1 rounded-full border border-caramel/50 shadow-inner">
+                            <span class="text-xl font-black text-logoGold">${item.price}<span class="text-xs font-normal">ج</span></span>
+                        </div>
+                    </div>
+                    <button onclick="addToCart('${item.name}', ${item.price})" class="add-btn w-full text-chocoDark font-black py-2.5 mt-2 flex justify-center items-center gap-2 text-lg">
+                        <i class="fa-solid fa-cart-plus"></i> أضف للسلة
+                    </button>
+                </div>
+            `;
+        }
+
+        function closeCategory() {
+            document.getElementById('menu-content').style.display = 'none';
+            document.getElementById('cakes-content').style.display = 'none';
+        }
+
+        function showCategory(catKey) {
+            playClickSound();
+            closeCategory();
+
+            if (catKey === 'cakes') {
+                document.getElementById('cakes-content').style.display = 'block';
+                document.getElementById('cakes-square').innerHTML = menuData.cakes.square.map(createHTMLItem).join('');
+                document.getElementById('cakes-round').innerHTML = menuData.cakes.round.map(createHTMLItem).join('');
+                document.getElementById('cakes-shapes').innerHTML = menuData.cakes.shapes.map(createHTMLItem).join('');
+            } else {
+                document.getElementById('menu-content').style.display = 'block';
+                const catInfo = menuData[catKey];
+                document.getElementById('category-title').innerText = catInfo.title;
+                document.getElementById('items-grid').innerHTML = catInfo.items.map(createHTMLItem).join('');
+            }
+            
+            setTimeout(() => {
+                const yOffset = -100; 
+                const element = document.getElementById('display-area');
+                const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
+                window.scrollTo({top: y, behavior: 'smooth'});
+            }, 100);
+        }
+
+        // --- كود النافذة المنبثقة بحركات الدخول والخروج الجديدة ---
+        function toggleSocialModal() {
+            playClickSound();
+            const modal = document.getElementById('social-modal');
+            const overlay = document.getElementById('social-modal-overlay');
+            
+            if(modal.classList.contains('modal-active')) {
+                // إغلاق (إزالة الكلاسات وانتظار الحركة لتنتهي ثم إخفاء العنصر)
+                modal.classList.remove('modal-active');
+                overlay.classList.remove('overlay-active');
+                setTimeout(() => {
+                    modal.classList.add('hidden');
+                    overlay.classList.add('hidden');
+                }, 400); // 400ms وهو نفس وقت الـ transition
+            } else {
+                // فتح (إظهار العنصر ثم إضافة كلاسات الحركة بفاصل زمني بسيط جداً)
+                modal.classList.remove('hidden');
+                overlay.classList.remove('hidden');
+                setTimeout(() => {
+                    modal.classList.add('modal-active');
+                    overlay.classList.add('overlay-active');
+                }, 10);
+            }
+        }
+
+        const searchInput = document.getElementById('searchInput');
+        const searchDropdown = document.getElementById('search-dropdown');
+        const searchResultsGrid = document.getElementById('search-results-grid');
+
+        searchInput.addEventListener('input', (e) => {
+            const term = e.target.value.trim().toLowerCase();
+            if(term === '') {
+                searchDropdown.classList.add('hidden');
+                return;
+            }
+
+            searchDropdown.classList.remove('hidden');
+            searchResultsGrid.innerHTML = '';
+            let found = false;
+
+            ['oriental', 'western', 'bakery'].forEach(cat => {
+                menuData[cat].items.forEach(item => {
+                    if(item.name.toLowerCase().includes(term)) { searchResultsGrid.innerHTML += createSearchItem(item); found = true; }
+                });
+            });
+
+            ['square', 'round', 'shapes'].forEach(subCat => {
+                menuData.cakes[subCat].forEach(item => {
+                    if(item.name.toLowerCase().includes(term)) { searchResultsGrid.innerHTML += createSearchItem(item); found = true; }
+                });
+            });
+
+            if(!found) searchResultsGrid.innerHTML = `<div class="text-center text-beige/70 py-4 font-bold">عذراً، لم نجد الصنف!</div>`;
+        });
+
+        function createSearchItem(item) {
+            return `
+                <div class="flex justify-between items-center bg-chocoDark p-3 rounded-xl border border-caramel/30 hover:border-logoGold transition-colors">
+                    <span class="text-beige font-bold">${item.name}</span>
+                    <div class="flex items-center gap-3">
+                        <span class="text-logoGold font-black">${item.price}ج</span>
+                        <button onclick="addToCart('${item.name}', ${item.price})" class="bg-caramel hover:bg-logoGold text-chocoDark w-8 h-8 rounded-full flex justify-center items-center transition shadow-md">
+                            <i class="fa-solid fa-plus"></i>
+                        </button>
+                    </div>
+                </div>
+            `;
+        }
+
+        document.addEventListener('click', (e) => {
+            if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
+                searchDropdown.classList.add('hidden');
+            }
+        });
+
+        const emojis = ['🎂', '🧁', '🥐', '🍰', '🍩', '🍪', '🍫'];
+        const floatContainer = document.getElementById('floating-container');
+        let emojiCount = 0;
+        
+        function createFloatingEmoji() {
+            if(emojiCount > 6) return; 
+            const el = document.createElement('div');
+            el.className = 'floating-emoji';
+            el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+            el.style.left = Math.random() * 90 + 'vw';
+            el.style.animationDuration = (Math.random() * 10 + 15) + 's'; 
+            floatContainer.appendChild(el);
+            emojiCount++;
+            setTimeout(() => { el.remove(); emojiCount--; }, 20000);
+        }
+        setInterval(createFloatingEmoji, 2500);
+
+        const navbar = document.getElementById('navbar');
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 30) {
+                navbar.classList.add('nav-scrolled', 'py-1');
+                navbar.classList.remove('py-4');
+            } else {
+                navbar.classList.remove('nav-scrolled', 'py-1');
+                navbar.classList.add('py-4');
+            }
+        });
+    </script>
+</body> 
+</html>
+
+
