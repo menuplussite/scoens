@@ -1,804 +1,2243 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="ar" dir="rtl">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>سكونز للحلويات - سكر زمان</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-    <link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
-    <script>
-        tailwind.config = {
-            theme: {
-                extend: {
-                    colors: {
-                        camel: '#C19A6B',
-                        beige: '#F5F5DC',
-                        logoGold: '#ca8a04',
-                        chocoDark: '#2E1503',
-                        chocoLight: '#4A2511',
-                        caramel: '#D97706',
-                        fb: '#1877F2',
-                        wa: '#25D366'
-                    }
-                }
-            }
-        }
-    </script>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>سكونز | سكر زمان</title>
 
-    <style>
-        body {
-            font-family: 'Cairo', sans-serif;
-            background-color: #2E1503;
-            color: #F5F5DC;
-            background-image: url('https://res.cloudinary.com/dbahe7lxz/image/upload/q_auto,f_auto/v1786908834/idraaak/c4xtuzvofqwh0xbcyxet.jpg');
-            background-size: cover;
-            background-position: center;
-            background-attachment: fixed;
-            scroll-behavior: smooth;
-            overflow-x: hidden;
-        }
+<script src="https://cdn.tailwindcss.com"></script>
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;500;600;700;800;900&family=Aref+Ruqaa:wght@400;700&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.min.css">
 
-        .bg-overlay {
-            position: fixed;
-            top: 0; left: 0; width: 100%; height: 100%;
-            background: linear-gradient(to bottom, rgba(46, 21, 3, 0.92), rgba(26, 9, 0, 0.98));
-            z-index: -1;
-        }
+<style>
+:root{
+ --bg:#100704;
+ --bg2:#1b0c07;
+ --cream:#fff5e4;
+ --gold:#e9a45b;
+ --gold2:#ffc986;
+ --brown:#3b1a0d;
+ --line:#ffffff14;
+ --green:#25d366;
+}
 
-        .title-font {
-            font-family: 'Aref Ruqaa', serif;
-        }
+*{box-sizing:border-box}
 
-        .neon-text {
-            color: #fff;
-            text-shadow: 0 0 10px #ca8a04, 0 0 20px #ca8a04, 0 0 40px #D97706;
-            animation: pulseNeon 2s ease-in-out infinite alternate;
-        }
-        @keyframes pulseNeon {
-            0% { text-shadow: 0 0 10px #ca8a04, 0 0 20px #ca8a04; }
-            100% { text-shadow: 0 0 15px #F5F5DC, 0 0 30px #ca8a04, 0 0 50px #D97706; }
-        }
+html{scroll-behavior:smooth}
 
-        /* --------------------------------------
-           نافذة التواصل (حركات الدخول والخروج)
-        --------------------------------------- */
-        #social-modal-overlay {
-            transition: opacity 0.4s ease;
-            opacity: 0;
-        }
-        #social-modal {
-            /* حركة Bounce سلسة جداً */
-            transition: all 0.5s cubic-bezier(0.68, -0.55, 0.265, 1.55);
-            transform: translate(-50%, -50%) scale(0.5);
-            opacity: 0;
-        }
-        .modal-active {
-            transform: translate(-50%, -50%) scale(1) !important;
-            opacity: 1 !important;
-        }
-        .overlay-active {
-            opacity: 1 !important;
-        }
+body{
+ margin:0;
+ color:var(--cream);
+ font-family:Cairo,sans-serif;
+ background:
+ radial-gradient(circle at 10% 10%,#d88a3d18,transparent 25%),
+ radial-gradient(circle at 90% 50%,#7c351318,transparent 30%),
+ #100704;
+ overflow-x:hidden;
+}
 
-        /* تأثير نبض خفيف للزر العائم */
-        @keyframes pulse-btn {
-            0% { box-shadow: 0 0 0 0 rgba(217,119,6,0.7); }
-            70% { box-shadow: 0 0 0 15px rgba(217,119,6,0); }
-            100% { box-shadow: 0 0 0 0 rgba(217,119,6,0); }
-        }
-        .fab-btn {
-            animation: pulse-btn 2s infinite;
-        }
-        .fab-btn:hover {
-            animation: none;
-        }
+body:before{
+ content:"";
+ position:fixed;
+ inset:0;
+ z-index:-3;
+ background:url("https://res.cloudinary.com/dbahe7lxz/image/upload/q_auto,f_auto/v1786908834/idraaak/c4xtuzvofqwh0xbcyxet.jpg") center/cover;
+ opacity:.09;
+ filter:blur(15px);
+}
 
-        /* أنوار الليد للأقسام */
-        .led-border {
-            position: relative;
-            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
-            overflow: hidden;
-            cursor: pointer;
-            transition: transform 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            filter: drop-shadow(0 10px 15px rgba(0,0,0,0.6));
-            will-change: transform;
-        }
-        .led-border:hover {
-            transform: translateY(-15px) scale(1.05);
-            filter: drop-shadow(0 15px 25px rgba(217, 119, 6, 0.6));
-            z-index: 10;
-        }
-        .led-border::before {
-            content: '';
-            position: absolute;
-            top: -50%; left: -50%;
-            width: 200%; height: 200%;
-            background: conic-gradient(transparent, transparent, #F5F5DC, #ca8a04, #D97706, transparent);
-            animation: rotateLed 3s linear infinite;
-            z-index: 0;
-        }
-        .led-content {
-            position: absolute;
-            inset: 6px;
-            border-radius: 40% 60% 70% 30% / 40% 50% 60% 50%;
-            z-index: 1;
-            overflow: hidden;
-            background-color: #2E1503;
-            transition: border-radius 0.5s ease;
-        }
-        .led-border:hover .led-content {
-            border-radius: 30% 70% 50% 50% / 50% 30% 70% 50%;
-        }
-        @keyframes rotateLed { 100% { transform: rotate(360deg); } }
+body:after{
+ content:"";
+ position:fixed;
+ inset:0;
+ z-index:-2;
+ background:linear-gradient(135deg,#100704f5,#100704c9,#241007f5);
+}
 
-        /* كروت الأصناف */
-        .menu-item-card {
-            background: linear-gradient(145deg, #4A2511, #3a1d0d);
-            border: 2px dashed #ca8a04;
-            border-radius: 20px 0 20px 0;
-            transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-            position: relative;
-            overflow: hidden;
-        }
-        .menu-item-card::after {
-            content: '';
-            position: absolute;
-            top: 0; left: -100%;
-            width: 50%; height: 100%;
-            background: linear-gradient(to right, transparent, rgba(255,255,255,0.1), transparent);
-            transform: skewX(-20deg);
-            transition: 0.5s;
-        }
-        .menu-item-card:hover {
-            transform: translateY(-5px);
-            border-style: solid;
-            box-shadow: 0 10px 20px rgba(217, 119, 6, 0.3);
-        }
-        .menu-item-card:hover::after { left: 200%; }
+.ruqaa{font-family:"Aref Ruqaa",serif}
 
-        .add-btn {
-            background: linear-gradient(45deg, #ca8a04, #D97706);
-            border-radius: 50px;
-            box-shadow: 0 4px 15px rgba(202, 138, 4, 0.4);
-            transition: all 0.3s ease;
-        }
-        .add-btn:hover {
-            transform: scale(1.05);
-            box-shadow: 0 6px 20px rgba(202, 138, 4, 0.6);
-            filter: brightness(1.1);
-        }
+/* ================= NAV ================= */
 
-        .floating-emoji {
-            position: fixed;
-            bottom: -10vh;
-            font-size: 2.5rem;
-            opacity: 0.2;
-            z-index: -1;
-            pointer-events: none;
-            animation: floatup linear infinite;
-            will-change: transform, opacity;
-        }
-        @keyframes floatup {
-            0% { transform: translate3d(0, 0, 0) rotate(0deg); opacity: 0; }
-            10% { opacity: 0.3; }
-            90% { opacity: 0.3; }
-            100% { transform: translate3d(50px, -120vh, 0) rotate(360deg); opacity: 0; }
-        }
+.topbar{
+ position:fixed;
+ top:15px;
+ left:15px;
+ right:15px;
+ z-index:100;
+ transition:.45s;
+}
 
-        .menu-container {
-            background: rgba(46, 21, 3, 0.95);
-            border: 3px solid #D97706;
-            border-radius: 2rem;
-            padding: 2rem;
-            display: none;
-            animation: popIn 0.5s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
-            box-shadow: 0 20px 50px rgba(0,0,0,0.7);
-            position: relative;
-        }
-        @keyframes popIn {
-            from { opacity: 0; transform: scale(0.9) translateY(20px); }
-            to { opacity: 1; transform: scale(1) translateY(0); }
-        }
+.nav{
+ max-width:1350px;
+ margin:auto;
+ min-height:72px;
+ padding:8px 12px;
+ display:flex;
+ align-items:center;
+ gap:15px;
+ border:1px solid #ffffff10;
+ background:#160a07aa;
+ backdrop-filter:blur(25px);
+ border-radius:28px;
+ box-shadow:0 20px 60px #0008;
+}
 
-        .nav-scrolled {
-            background-color: rgba(46, 21, 3, 0.98);
-            border-bottom: 2px dashed rgba(217, 119, 6, 0.5);
-            box-shadow: 0 4px 20px rgba(0,0,0,0.6);
-        }
+.logo{
+ width:54px;
+ height:54px;
+ object-fit:cover;
+ border-radius:50% 42% 58% 46%;
+ border:2px solid var(--gold);
+ box-shadow:0 0 30px #e9a45b33;
+ transition:.4s;
+}
 
-        ::-webkit-scrollbar { width: 8px; }
-        ::-webkit-scrollbar-track { background: #2E1503; }
-        ::-webkit-scrollbar-thumb { background: #D97706; border-radius: 10px; }
-        ::-webkit-scrollbar-thumb:hover { background: #ca8a04; }
-        
-        #cart-sidebar { transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1); }
-        .cart-open { transform: translateX(0) !important; }
-        @keyframes cartBump {
-            0%, 100% { transform: scale(1); }
-            50% { transform: scale(1.4) rotate(-10deg); color: #fff; }
-        }
-        .cart-bump { animation: cartBump 0.5s ease-out; }
-    </style>
+.logo:hover{
+ transform:rotate(-8deg) scale(1.1);
+}
+
+.brand{
+ display:flex;
+ align-items:center;
+ gap:10px;
+ color:white;
+ text-decoration:none;
+}
+
+.brand b{
+ font-size:23px;
+}
+
+.brand small{
+ display:block;
+ color:var(--gold2);
+ font-weight:800;
+}
+
+.search{
+ flex:1;
+ max-width:650px;
+ margin:auto;
+ position:relative;
+}
+
+.search input{
+ width:100%;
+ height:48px;
+ padding:0 48px 0 20px;
+ border:1px solid #ffffff13;
+ border-radius:18px 38px 18px 38px;
+ background:#ffffff08;
+ color:#fff;
+ outline:none;
+ font:700 14px Cairo;
+ transition:.3s;
+}
+
+.search input:focus{
+ border-color:#e9a45b88;
+ background:#ffffff0e;
+ box-shadow:0 0 0 5px #e9a45b0b;
+}
+
+.search>i{
+ position:absolute;
+ right:19px;
+ top:15px;
+ color:var(--gold2);
+}
+
+.results{
+ position:absolute;
+ top:58px;
+ right:0;
+ left:0;
+ background:#211008f8;
+ border:1px solid #e9a45b25;
+ border-radius:25px;
+ padding:8px;
+ display:none;
+ box-shadow:0 30px 80px #000d;
+ max-height:400px;
+ overflow:auto;
+}
+
+/* ================= CART BUTTON ================= */
+
+.cartBtn{
+ width:58px;
+ height:58px;
+ flex-shrink:0;
+ border:0;
+ color:#251107;
+ background:linear-gradient(135deg,var(--gold2),var(--gold));
+ cursor:pointer;
+ border-radius:58% 42% 50% 40%;
+ box-shadow:0 12px 35px #e9a45b30;
+ transition:.35s;
+ position:relative;
+}
+
+.cartBtn:hover{
+ transform:rotate(7deg) scale(1.08);
+}
+
+.badge{
+ position:absolute;
+ top:-6px;
+ right:-5px;
+ width:25px;
+ height:25px;
+ display:grid;
+ place-items:center;
+ background:#e64b45;
+ border:2px solid #160a07;
+ border-radius:50%;
+ font-size:11px;
+ font-weight:900;
+ color:white;
+}
+
+/* ================= HERO ================= */
+
+.hero{
+ min-height:850px;
+ position:relative;
+ display:flex;
+ align-items:center;
+ padding:150px 20px 100px;
+ overflow:hidden;
+}
+
+.heroPic{
+ position:absolute;
+ inset:-20px;
+ background:
+ linear-gradient(90deg,#100704f9 8%,#100704b0 48%,#100704e8),
+ url("https://res.cloudinary.com/dbahe7lxz/image/upload/q_auto,f_auto/v1786908834/idraaak/c4xtuzvofqwh0xbcyxet.jpg") center/cover;
+ transform:scale(1.05);
+ animation:heroZoom 14s ease-in-out infinite alternate;
+}
+
+@keyframes heroZoom{
+ to{transform:scale(1.12)}
+}
+
+.heroInner{
+ max-width:1350px;
+ width:100%;
+ margin:auto;
+ position:relative;
+}
+
+.heroTag{
+ display:inline-flex;
+ align-items:center;
+ gap:10px;
+ padding:10px 19px;
+ background:#ffffff08;
+ border:1px solid #e9a45b38;
+ border-radius:17px 35px 17px 35px;
+ color:var(--gold2);
+ font-weight:900;
+ animation:up .8s both;
+}
+
+.hero h1{
+ font-size:clamp(100px,17vw,220px);
+ line-height:.65;
+ margin:40px 0 0;
+ color:#fff8e9;
+ text-shadow:0 30px 80px #000;
+}
+
+.hero h2{
+ margin:40px 0 15px;
+ font-size:clamp(45px,6vw,78px);
+ color:var(--gold2);
+ text-shadow:0 15px 50px #000;
+}
+
+.hero p{
+ max-width:650px;
+ color:#fff4dfaa;
+ font-size:17px;
+ line-height:2;
+}
+
+.actions{
+ display:flex;
+ gap:15px;
+ margin-top:30px;
+ flex-wrap:wrap;
+}
+
+/* ================= CRAZY BUTTONS ================= */
+
+.btn{
+ position:relative;
+ min-height:58px;
+ padding:0 30px;
+ border:0;
+ cursor:pointer;
+ color:#261107;
+ font:900 15px Cairo;
+ display:inline-flex;
+ align-items:center;
+ justify-content:center;
+ gap:10px;
+ overflow:hidden;
+ transition:.35s;
+}
+
+.btn.primary{
+ background:linear-gradient(135deg,#ffc986,#d98538);
+ border-radius:30px 12px 30px 55px;
+ box-shadow:0 15px 40px #e9a45b30;
+}
+
+.btn.primary:hover{
+ transform:translateY(-6px) rotate(-1deg);
+ border-radius:15px 45px 15px 45px;
+ box-shadow:0 25px 60px #e9a45b45;
+}
+
+.btn.ghost{
+ color:white;
+ background:#ffffff08;
+ border:1px solid #ffffff1b;
+ border-radius:50px 17px 50px 25px;
+}
+
+.btn.ghost:hover{
+ background:#ffffff12;
+ transform:translateY(-6px) rotate(1deg);
+}
+
+/* ================= SECTION ================= */
+
+.section{
+ max-width:1350px;
+ margin:auto;
+ padding:100px 20px;
+}
+
+.heading{
+ text-align:center;
+ margin-bottom:60px;
+}
+
+.heading small{
+ color:var(--gold2);
+ font-weight:900;
+}
+
+.heading h2{
+ font-family:"Aref Ruqaa";
+ font-size:clamp(45px,6vw,75px);
+ margin:5px 0;
+}
+
+.heading p{
+ color:#fff4df70;
+}
+
+/* ================= ORGANIC CATEGORIES ================= */
+
+.cats{
+ display:grid;
+ grid-template-columns:1.15fr .85fr 1fr 1fr;
+ gap:22px;
+ align-items:center;
+}
+
+.cat{
+ position:relative;
+ height:390px;
+ overflow:hidden;
+ cursor:pointer;
+ border:1px solid #ffffff15;
+ background:#251008;
+ box-shadow:0 25px 70px #0007;
+ transition:.6s cubic-bezier(.2,.8,.2,1);
+}
+
+.cat:nth-child(1){
+ border-radius:48% 22% 46% 18%;
+ transform:rotate(-1deg);
+}
+
+.cat:nth-child(2){
+ height:470px;
+ border-radius:25% 55% 22% 48%;
+ transform:rotate(2deg);
+}
+
+.cat:nth-child(3){
+ border-radius:60px 20% 55px 30%;
+ transform:rotate(-2deg);
+}
+
+.cat:nth-child(4){
+ border-radius:22% 45% 18% 55%;
+ transform:rotate(2deg);
+}
+
+.cat:hover{
+ transform:translateY(-16px) rotate(0) scale(1.025);
+ box-shadow:0 35px 90px #000b;
+}
+
+.cat img{
+ position:absolute;
+ inset:0;
+ width:100%;
+ height:100%;
+ object-fit:cover;
+ transition:.8s;
+}
+
+.cat:hover img{
+ transform:scale(1.13) rotate(2deg);
+}
+
+.cat:after{
+ content:"";
+ position:absolute;
+ inset:0;
+ background:
+ linear-gradient(to top,#120704f5 5%,#12070470 50%,transparent 80%);
+}
+
+.catInfo{
+ position:absolute;
+ z-index:2;
+ right:28px;
+ bottom:28px;
+}
+
+.catInfo span{
+ color:var(--gold2);
+ font-size:12px;
+ font-weight:900;
+}
+
+.catInfo h3{
+ font-family:"Aref Ruqaa";
+ font-size:48px;
+ margin:0;
+}
+
+.catInfo small{
+ color:#fff9;
+}
+
+.catArrow{
+ margin-top:15px;
+ width:48px;
+ height:48px;
+ display:grid;
+ place-items:center;
+ color:var(--gold2);
+ background:#ffffff0b;
+ border:1px solid #e9a45b44;
+ border-radius:50% 35% 50% 35%;
+ transition:.4s;
+}
+
+.cat:hover .catArrow{
+ background:var(--gold);
+ color:#251107;
+ transform:rotate(-25deg) scale(1.1);
+}
+
+/* ================= MENU ================= */
+
+.menu{
+ display:none;
+ margin-top:70px;
+ padding:35px;
+ background:#1c0c07dd;
+ backdrop-filter:blur(20px);
+ border:1px solid #e9a45b22;
+ border-radius:55px 22px 55px 22px;
+ box-shadow:0 40px 100px #0009;
+ animation:menuIn .5s both;
+}
+
+.menuHead{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin-bottom:30px;
+}
+
+.menuTitle{
+ margin:0;
+ color:var(--gold2);
+ font-size:50px;
+}
+
+.close{
+ width:48px;
+ height:48px;
+ border:0;
+ color:white;
+ background:#ffffff08;
+ cursor:pointer;
+ border-radius:50% 35% 50% 35%;
+ transition:.35s;
+}
+
+.close:hover{
+ background:#a83d3d;
+ transform:rotate(90deg);
+}
+
+/* ================= PRODUCT CARDS ================= */
+
+.grid{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:22px;
+}
+
+.card{
+ position:relative;
+ min-height:190px;
+ padding:25px;
+ overflow:hidden;
+ background:
+ radial-gradient(circle at 90% 10%,#e9a45b12,transparent 35%),
+ linear-gradient(145deg,#3a190b,#1d0c07);
+ border:1px solid #ffffff12;
+ transition:.45s;
+ box-shadow:0 15px 40px #0005;
+}
+
+.card:nth-child(4n+1){
+ border-radius:38px 13px 48px 20px;
+}
+
+.card:nth-child(4n+2){
+ border-radius:15px 42px 20px 48px;
+}
+
+.card:nth-child(4n+3){
+ border-radius:50% 18px 38px 18px;
+}
+
+.card:nth-child(4n){
+ border-radius:22px 50% 20px 45px;
+}
+
+.card:before{
+ content:"";
+ position:absolute;
+ width:90px;
+ height:90px;
+ left:-35px;
+ bottom:-35px;
+ border-radius:50%;
+ background:#e9a45b10;
+ transition:.4s;
+}
+
+.card:hover{
+ transform:translateY(-9px) rotate(.5deg);
+ border-color:#e9a45b55;
+ box-shadow:0 28px 60px #0009;
+}
+
+.card:hover:before{
+ transform:scale(2);
+}
+
+.cardTop{
+ position:relative;
+ display:flex;
+ justify-content:space-between;
+ gap:15px;
+ align-items:start;
+}
+
+.name{
+ font-weight:900;
+ font-size:17px;
+ line-height:1.7;
+}
+
+.price{
+ flex-shrink:0;
+ color:#251107;
+ background:linear-gradient(135deg,#ffc986,#d98538);
+ padding:7px 12px;
+ font-weight:900;
+ border-radius:50% 30% 50% 30%;
+ transform:rotate(-3deg);
+}
+
+.add{
+ width:100%;
+ height:46px;
+ margin-top:22px;
+ border:0;
+ cursor:pointer;
+ color:#251107;
+ font:900 14px Cairo;
+ background:linear-gradient(135deg,#ffc986,#d98538);
+ border-radius:30px 12px 30px 45px;
+ transition:.35s;
+}
+
+.add:hover{
+ transform:translateY(-4px) scale(1.015);
+ border-radius:12px 35px 12px 35px;
+ box-shadow:0 12px 30px #e9a45b35;
+}
+
+/* ================= CAKES ================= */
+
+.cakes{
+ display:grid;
+ grid-template-columns:repeat(3,1fr);
+ gap:25px;
+}
+
+.cakeCol{
+ padding:25px;
+ background:#ffffff05;
+ border:1px solid #ffffff10;
+ box-shadow:0 20px 50px #0005;
+}
+
+.cakeCol:nth-child(1){
+ border-radius:45px 15px 45px 15px;
+}
+
+.cakeCol:nth-child(2){
+ border-radius:15px 45px 15px 45px;
+}
+
+.cakeCol:nth-child(3){
+ border-radius:50% 20px 45px 25px;
+}
+
+.cakeCol h3{
+ margin:0 0 10px;
+ color:var(--gold2);
+ font-family:"Aref Ruqaa";
+ font-size:35px;
+}
+
+.cakeRow{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ padding:14px 0;
+ border-bottom:1px dashed #ffffff15;
+}
+
+.miniAdd{
+ width:38px;
+ height:38px;
+ border:0;
+ cursor:pointer;
+ color:var(--gold2);
+ background:#ffffff09;
+ border-radius:50% 35% 50% 35%;
+ transition:.3s;
+}
+
+.miniAdd:hover{
+ background:var(--gold);
+ color:#251107;
+ transform:rotate(-15deg) scale(1.1);
+}
+
+/* ================= CART ================= */
+
+.overlay{
+ position:fixed;
+ inset:0;
+ z-index:200;
+ background:#000c;
+ backdrop-filter:blur(8px);
+ opacity:0;
+ pointer-events:none;
+ transition:.35s;
+}
+
+.overlay.on{
+ opacity:1;
+ pointer-events:auto;
+}
+
+.drawer{
+ position:fixed;
+ z-index:210;
+ top:0;
+ right:0;
+ height:100dvh;
+ width:min(470px,100vw);
+ background:
+ radial-gradient(circle at 100% 0,#e9a45b12,transparent 30%),
+ #190b07;
+ transform:translateX(110%);
+ transition:.5s cubic-bezier(.2,.85,.2,1);
+ display:flex;
+ flex-direction:column;
+ box-shadow:-35px 0 100px #000;
+}
+
+.drawer.on{
+ transform:none;
+}
+
+.drawerHead{
+ padding:22px;
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ border-bottom:1px solid #ffffff10;
+}
+
+.drawerHead h2{
+ margin:0;
+ font-family:"Aref Ruqaa";
+ color:var(--gold2);
+ font-size:38px;
+}
+
+.items{
+ flex:1;
+ overflow:auto;
+ padding:18px;
+}
+
+.empty{
+ height:100%;
+ display:grid;
+ place-content:center;
+ text-align:center;
+ color:#fff5;
+ gap:12px;
+}
+
+.empty i{
+ font-size:65px;
+ color:#e9a45b30;
+}
+
+/* ================= CART ITEM - VERTICAL ================= */
+
+.cartItem{
+ width:100%;
+ margin-bottom:15px;
+ padding:18px;
+ background:
+ linear-gradient(135deg,#35170a,#210d07);
+ border:1px solid #e9a45b22;
+ box-shadow:0 12px 35px #0005;
+ border-radius:35px 15px 35px 20px;
+ animation:cartIn .35s both;
+}
+
+.cartItem:nth-child(even){
+ border-radius:15px 35px 20px 35px;
+}
+
+.cartTop{
+ display:flex;
+ justify-content:space-between;
+ gap:12px;
+}
+
+.cartName{
+ font-weight:900;
+ font-size:16px;
+ line-height:1.7;
+}
+
+.cartPrice{
+ color:var(--gold2);
+ font-weight:900;
+ margin-top:3px;
+}
+
+.qty{
+ display:flex;
+ align-items:center;
+ gap:8px;
+ margin-top:15px;
+}
+
+.qty button{
+ width:36px;
+ height:36px;
+ border:0;
+ cursor:pointer;
+ background:#ffffff09;
+ color:white;
+ border-radius:50% 35% 50% 35%;
+ transition:.25s;
+}
+
+.qty button:hover{
+ background:var(--gold);
+ color:#251107;
+ transform:scale(1.08);
+}
+
+.qty strong{
+ min-width:30px;
+ text-align:center;
+}
+
+.remove{
+ margin-right:auto;
+ color:#ff8b8b!important;
+}
+
+.footer{
+ padding:18px;
+ background:#210d07;
+ border-top:1px solid #ffffff10;
+}
+
+.total{
+ display:flex;
+ justify-content:space-between;
+ align-items:center;
+ margin-bottom:15px;
+ font-size:20px;
+ font-weight:900;
+}
+
+.total strong{
+ color:var(--gold2);
+ font-size:27px;
+}
+
+.field{
+ width:100%;
+ height:49px;
+ margin-bottom:9px;
+ padding:0 15px;
+ border:1px solid #ffffff12;
+ outline:none;
+ border-radius:16px 28px 16px 28px;
+ background:#100704;
+ color:white;
+ font:700 14px Cairo;
+}
+
+.note{
+ height:78px;
+ padding-top:10px;
+ resize:none;
+}
+
+.checks{
+ display:grid;
+ grid-template-columns:1fr 1fr;
+ gap:9px;
+}
+
+.wa{
+ height:49px;
+ border:0;
+ cursor:pointer;
+ color:white;
+ background:#25d366;
+ font:900 14px Cairo;
+ border-radius:35px 13px 35px 13px;
+ transition:.3s;
+}
+
+.wa:hover{
+ transform:translateY(-4px);
+ box-shadow:0 12px 30px #25d36630;
+}
+
+.clear{
+ width:100%;
+ height:40px;
+ margin-top:8px;
+ border:0;
+ cursor:pointer;
+ color:#ff8b8b;
+ background:#ff68680b;
+ border-radius:15px 30px 15px 30px;
+ font:800 13px Cairo;
+}
+
+@keyframes cartIn{
+ from{opacity:0;transform:translateX(30px) scale(.95)}
+ to{opacity:1;transform:none}
+}
+
+/* ================= FLOATING ================= */
+
+.fab{
+ position:fixed;
+ z-index:150;
+ bottom:22px;
+ left:22px;
+ width:64px;
+ height:64px;
+ border:1px solid #fff5;
+ color:#251107;
+ background:linear-gradient(135deg,#ffc986,#d98538);
+ cursor:pointer;
+ border-radius:50% 35% 50% 35%;
+ box-shadow:0 15px 45px #0009;
+ animation:pulse 2.2s infinite;
+}
+
+@keyframes pulse{
+ 50%{transform:translateY(-5px) rotate(-5deg);box-shadow:0 20px 55px #e9a45b40}
+}
+
+/* ================= TOAST ================= */
+
+.toast{
+ position:fixed;
+ z-index:500;
+ top:105px;
+ left:50%;
+ transform:translate(-50%,-25px) scale(.9);
+ opacity:0;
+ padding:13px 23px;
+ color:white;
+ background:#173b26;
+ border:1px solid #25d366;
+ border-radius:30px 12px 30px 12px;
+ box-shadow:0 20px 50px #0008;
+ transition:.35s;
+ pointer-events:none;
+ font-weight:900;
+}
+
+.toast.show{
+ opacity:1;
+ transform:translate(-50%,0) scale(1);
+}
+
+/* ================= FOOTER ================= */
+
+footer{
+ margin-top:70px;
+ padding:70px 20px 30px;
+ text-align:center;
+ background:#0c0503;
+ border-top:1px solid #ffffff0d;
+}
+
+.footerLogo{
+ width:85px;
+ height:85px;
+ object-fit:cover;
+ border:2px solid var(--gold);
+ border-radius:50% 40% 55% 45%;
+}
+
+.socials{
+ display:flex;
+ justify-content:center;
+ gap:12px;
+ margin:25px;
+}
+
+.social{
+ width:47px;
+ height:47px;
+ display:grid;
+ place-items:center;
+ color:white;
+ text-decoration:none;
+ background:#ffffff08;
+ border:1px solid #ffffff12;
+ border-radius:50% 35% 50% 35%;
+ transition:.3s;
+}
+
+.social:hover{
+ background:var(--gold);
+ color:#251107;
+ transform:translateY(-6px) rotate(-8deg);
+}
+
+/* ================= REVEAL ================= */
+
+.reveal{
+ opacity:0;
+ transform:translateY(35px) scale(.96);
+ transition:.8s;
+}
+
+.reveal.show{
+ opacity:1;
+ transform:none;
+}
+
+@keyframes up{
+ from{opacity:0;transform:translateY(25px)}
+ to{opacity:1;transform:none}
+}
+
+@keyframes menuIn{
+ from{opacity:0;transform:translateY(25px) scale(.96)}
+ to{opacity:1;transform:none}
+}
+
+/* ================= RESPONSIVE ================= */
+
+@media(max-width:950px){
+
+ .cats{
+  grid-template-columns:1fr 1fr;
+ }
+
+ .grid,
+ .cakes{
+  grid-template-columns:1fr 1fr;
+ }
+
+ .brand small{
+  display:none;
+ }
+}
+
+@media(max-width:650px){
+
+ .topbar{
+  top:7px;
+  left:7px;
+  right:7px;
+ }
+
+ .nav{
+  border-radius:22px;
+ }
+
+ .logo{
+  width:46px;
+  height:46px;
+ }
+
+ .brand b{
+  font-size:19px;
+ }
+
+ .search{
+  order:3;
+  flex-basis:100%;
+ }
+
+ .hero{
+  min-height:730px;
+  padding-top:200px;
+ }
+
+ .hero h1{
+  font-size:105px;
+ }
+
+ .hero h2{
+  font-size:48px;
+ }
+
+ .hero p{
+  font-size:14px;
+ }
+
+ .actions{
+  display:grid;
+  grid-template-columns:1fr;
+ }
+
+ .btn{
+  width:100%;
+ }
+
+ .section{
+  padding:65px 14px;
+ }
+
+ .cats{
+  grid-template-columns:1fr 1fr;
+  gap:10px;
+ }
+
+ .cat,
+ .cat:nth-child(2){
+  height:250px;
+ }
+
+ .catInfo{
+  right:16px;
+  bottom:16px;
+ }
+
+ .catInfo h3{
+  font-size:32px;
+ }
+
+ .catInfo small{
+  font-size:9px;
+ }
+
+ .grid,
+ .cakes{
+  grid-template-columns:1fr;
+ }
+
+ .menu{
+  padding:18px;
+  border-radius:35px 15px 35px 15px;
+ }
+
+ .menuTitle{
+  font-size:38px;
+ }
+
+ .checks{
+  grid-template-columns:1fr;
+ }
+
+ .fab{
+  width:57px;
+  height:57px;
+  bottom:15px;
+  left:15px;
+ }
+
+}
+
+@media(prefers-reduced-motion:reduce){
+ *,
+ *:before,
+ *:after{
+  animation-duration:.01ms!important;
+  transition-duration:.01ms!important;
+ }
+}
+</style>
 </head>
-<body class="antialiased">
 
-    <div class="bg-overlay"></div>
-    <div id="floating-container"></div>
+<body>
 
-    <div id="toast" class="fixed top-24 left-1/2 transform -translate-x-1/2 bg-gradient-to-r from-green-600 to-green-500 text-white px-8 py-4 rounded-full shadow-[0_10px_30px_rgba(34,197,94,0.4)] font-bold z-[100] opacity-0 pointer-events-none transition-all duration-300 flex items-center gap-3 text-lg border-2 border-green-400">
-        <i class="fa-solid fa-cookie-bite text-2xl"></i> تمت الإضافة للسلة بنجاح
+<!-- ================= NAV ================= -->
+
+<header class="topbar">
+ <div class="nav">
+
+  <a class="brand" href="#">
+   <img class="logo"
+   src="https://res.cloudinary.com/dbahe7lxz/image/upload/q_auto,f_auto,w_150/v1786911357/idraaak/tgylfwmhztwkgth1upm8.jpg">
+
+   <div>
+    <b>سكونز</b>
+    <small>سكر زمان</small>
+   </div>
+  </a>
+
+  <div class="search">
+   <i class="fa-solid fa-magnifying-glass"></i>
+   <input id="search" placeholder="دور على صنفك المفضل...">
+   <div class="results" id="results"></div>
+  </div>
+
+  <button class="cartBtn" onclick="openCart()">
+   <i class="fa-solid fa-bag-shopping"></i>
+   <span class="badge" id="count">0</span>
+  </button>
+
+ </div>
+</header>
+
+<!-- ================= HERO ================= -->
+
+<section class="hero">
+
+ <div class="heroPic" id="heroPic"></div>
+
+ <div class="heroInner">
+
+  <div class="heroTag">
+   <i class="fa-solid fa-wand-magic-sparkles"></i>
+   طعم زمان... بروح جديدة
+  </div>
+
+  <h1 class="ruqaa">سكونز</h1>
+
+  <h2 class="ruqaa">سكر زمان</h2>
+
+  <p>
+   حلويات شرقية وغربية، تورت ومخبوزات معمولة بحب.
+   اختار اللي نفسك فيه، ضيفه للسلة، وابعت طلبك مباشرة على واتساب.
+  </p>
+
+  <div class="actions">
+
+   <button class="btn primary" onclick="goCats()">
+    <i class="fa-solid fa-sparkles"></i>
+    اكتشف المنيو
+   </button>
+
+   <button class="btn ghost" onclick="openCart()">
+    <i class="fa-solid fa-bag-shopping"></i>
+    سلة الطلبات
+   </button>
+
+  </div>
+
+ </div>
+</section>
+
+<!-- ================= CATEGORIES ================= -->
+
+<main>
+
+<section class="section" id="categories">
+
+ <div class="heading reveal">
+  <small>اختار مزاجك</small>
+  <h2>حكاية حلوة تبدأ من هنا</h2>
+  <p>كل قسم له طعمه... وكل طعم له حكاية.</p>
+ </div>
+
+ <div class="cats">
+
+  <div class="cat reveal" onclick="showCategory('oriental')">
+   <img src="https://res.cloudinary.com/dbahe7lxz/image/upload/q_auto,f_auto,w_800/v1786918048/idraaak/kvjtlayfnlwc9phrbnh9.jpg">
+   <div class="catInfo">
+    <span>01 / كلاسيك</span>
+    <h3>الشرقي</h3>
+    <small>كنافة • بسبوسة • بقلاوة</small>
+    <div class="catArrow">
+     <i class="fa-solid fa-arrow-left"></i>
+    </div>
+   </div>
+  </div>
+
+  <div class="cat reveal" onclick="showCakes()">
+   <img src="https://res.cloudinary.com/dbahe7lxz/image/upload/q_auto,f_auto,w_800/v1786918217/idraaak/fycuk0t9ieamup9yh0jg.jpg">
+   <div class="catInfo">
+    <span>02 / مناسبات</span>
+    <h3>التورت</h3>
+    <small>مقاسات وأشكال مختلفة</small>
+    <div class="catArrow">
+     <i class="fa-solid fa-arrow-left"></i>
+    </div>
+   </div>
+  </div>
+
+  <div class="cat reveal" onclick="showCategory('western')">
+   <img src="https://res.cloudinary.com/dbahe7lxz/image/upload/q_auto,f_auto,w_800/v1786918567/idraaak/lo9qq0l32xcf7wy4m2un.jpg">
+   <div class="catInfo">
+    <span>03 / مودرن</span>
+    <h3>الغربي</h3>
+    <small>تشيز كيك • موس • براونيز</small>
+    <div class="catArrow">
+     <i class="fa-solid fa-arrow-left"></i>
+    </div>
+   </div>
+  </div>
+
+  <div class="cat reveal" onclick="showCategory('bakery')">
+   <img src="https://res.cloudinary.com/dbahe7lxz/image/upload/q_auto,f_auto,w_800/v1786918390/idraaak/y5jx1wsapyojcpapxisc.jpg">
+   <div class="catInfo">
+    <span>04 / يومي</span>
+    <h3>المخبوزات</h3>
+    <small>كعك • بسكويت • بيتي فور</small>
+    <div class="catArrow">
+     <i class="fa-solid fa-arrow-left"></i>
+    </div>
+   </div>
+  </div>
+
+ </div>
+
+ <!-- MENU -->
+
+ <div class="menu" id="menu">
+
+  <div class="menuHead">
+   <h2 class="menuTitle" id="menuTitle"></h2>
+
+   <button class="close" onclick="closeMenu()">
+    <i class="fa-solid fa-xmark"></i>
+   </button>
+  </div>
+
+  <div class="grid" id="grid"></div>
+
+ </div>
+
+</section>
+
+</main>
+
+<!-- ================= CART ================= -->
+
+<div class="overlay" id="overlay" onclick="closeCart()"></div>
+
+<aside class="drawer" id="drawer">
+
+ <div class="drawerHead">
+
+  <h2>
+   <i class="fa-solid fa-bag-shopping"></i>
+   طلباتي
+  </h2>
+
+  <button class="close" onclick="closeCart()">
+   <i class="fa-solid fa-xmark"></i>
+  </button>
+
+ </div>
+
+ <div class="items" id="items"></div>
+
+ <div class="footer">
+
+  <div class="total">
+   <span>الإجمالي</span>
+   <strong>
+    <span id="total">0</span> ج.م
+   </strong>
+  </div>
+
+  <input
+   id="name"
+   class="field"
+   placeholder="👤 اسم العميل">
+
+  <select id="branch" class="field">
+   <option>فرع أسوان - حي العقاد</option>
+   <option>فرع كوم أمبو</option>
+  </select>
+
+  <select id="delivery" class="field">
+   <option>استلام من الفرع</option>
+   <option>توصيل</option>
+  </select>
+
+  <textarea
+   id="note"
+   class="field note"
+   placeholder="📝 ملاحظات الطلب (اختياري)">
+  </textarea>
+
+  <div class="checks">
+
+   <button class="wa" onclick="checkout('201029973960')">
+    أسوان
+    <i class="fa-brands fa-whatsapp"></i>
+   </button>
+
+   <button class="wa" onclick="checkout('201029973959')">
+    كوم أمبو
+    <i class="fa-brands fa-whatsapp"></i>
+   </button>
+
+  </div>
+
+  <button class="clear" onclick="clearCart()">
+   <i class="fa-solid fa-trash"></i>
+   تفريغ السلة
+  </button>
+
+ </div>
+
+</aside>
+
+<button class="fab" onclick="openCart()">
+ <i class="fa-solid fa-bag-shopping"></i>
+</button>
+
+<div class="toast" id="toast">
+ <i class="fa-solid fa-circle-check"></i>
+ تمت إضافة الصنف ❤️
+</div>
+
+<!-- ================= FOOTER ================= -->
+
+<footer>
+
+ <img
+ class="footerLogo"
+ src="https://res.cloudinary.com/dbahe7lxz/image/upload/q_auto,f_auto,w_150/v1786911357/idraaak/tgylfwmhztwkgth1upm8.jpg">
+
+ <h2 class="ruqaa"
+ style="font-size:50px;color:var(--gold2);margin:12px 0 0">
+  سكونز
+ </h2>
+
+ <p style="color:#fff4df88">
+  صُنع بحب.. من أجلكم ❤️
+ </p>
+
+ <div class="socials">
+
+  <a class="social"
+  target="_blank"
+  href="https://www.facebook.com/share/18ywRDfP27/">
+   <i class="fa-brands fa-facebook-f"></i>
+  </a>
+
+  <a class="social"
+  target="_blank"
+  href="https://www.facebook.com/share/1BYeYhqNsU/">
+   <i class="fa-brands fa-facebook"></i>
+  </a>
+
+  <a class="social"
+  target="_blank"
+  href="https://wa.me/201029973960">
+   <i class="fa-brands fa-whatsapp"></i>
+  </a>
+
+ </div>
+
+ <small style="color:#fff4df44">
+  © 2026 سكونز للحلويات والمخبوزات
+ </small>
+
+</footer>
+
+<script>
+
+/* ================= DATA ================= */
+
+const D={
+
+ oriental:{
+  title:"الحلويات الشرقية",
+  items:[
+   ["بسبوسة سادة",150],
+   ["بسبوسة قشطة",240],
+   ["بسبوسة تركي",240],
+   ["بسيمة - هريسة",240],
+   ["اساور فستق",260],
+   ["اساور لوز",260],
+   ["اساور نوتيلا",240],
+   ["بورمة مكسرات",260],
+   ["رواني - بلح الشام",240],
+   ["بلح الشام قشطة",240],
+   ["بقلاوة كريمة",260],
+   ["بقلاوة مكسرات",240],
+   ["بقلاوة حليب",240],
+   ["بقلاوة سادة",240],
+   ["رموش",240],
+   ["رموش مكسرات",260],
+   ["رموش مشكل",240],
+   ["مشكل صيامي",240],
+   ["شرقي مشكل - لوكس",240],
+   ["سكينة جوز هند - عجوة",240],
+   ["قطايف مكسرات",260],
+   ["قطايف كريمة",240],
+   ["كنافة ساده - عزيزية",240],
+   ["كنافة قشطة مانجا",240],
+   ["كنافة قشطة",240],
+   ["كنافة مكسرات",260],
+   ["كنافة صوابع",240],
+   ["كنافة كريمة",240],
+   ["كنافة نوتيلا - لوتس",240],
+   ["لقمة القاضي",240],
+   ["حبيبة - مدلعة",240]
+  ]
+ },
+
+ western:{
+  title:"الحلويات الغربية",
+  items:[
+   ["اكلير",35],
+   ["ملفيه",50],
+   ["براونيز",50],
+   ["هوهوز",35],
+   ["ديسباسيتو",65],
+   ["بيفتيرول",45],
+   ["فادج",50],
+   ["شطرنج",40],
+   ["قشطوطة",90],
+   ["انديان",50],
+   ["ريد",50],
+   ["موس",50],
+   ["هرم",35],
+   ["تارت",50],
+   ["قنبلة",40],
+   ["تشيز كيك",50],
+   ["جاتو لوكس",30],
+   ["طاجن أم علي",50],
+   ["انجلش كيك",80],
+   ["طاجن نوتيلا",70],
+   ["مولتن كبير",85],
+   ["مولتن صغير",60]
+  ]
+ },
+
+ bakery:{
+  title:"المخبوزات",
+  items:[
+   ["كعك ملبن",225],
+   ["كعك سادة",225],
+   ["كعك عجوة",225],
+   ["كعك مكسرات",225],
+   ["غريبة",225],
+   ["برازق",225],
+   ["سابلية",260],
+   ["لانكشير",225],
+   ["بسكويت زبدة",225],
+   ["بسكويت نشادر",225],
+   ["بسكويت برتقال",225],
+   ["بسكويت شيكولاتة",225],
+   ["كوكيز أبيض",225],
+   ["كوكيز شيكولاتة",225],
+   ["بيتي فور سادة",225],
+   ["بيتي فور مكسرات",260]
+  ]
+ },
+
+ cakes:{
+  title:"التورت",
+
+  square:[
+   ["مربع 20*20",390],
+   ["مربع 24*24",470],
+   ["مربع 30*20",470],
+   ["مربع 30*30",650],
+   ["مربع 40*30",800],
+   ["مربع 40*40",950],
+   ["مربع 60*40",1550]
+  ],
+
+  round:[
+   ["تورتة ميني",150],
+   ["مقاس 10",150],
+   ["مقاس 15",190],
+   ["مقاس 16",220],
+   ["مقاس 18",250],
+   ["مقاس 20",320],
+   ["مقاس 22",380],
+   ["مقاس 24",420],
+   ["مقاس 26",460],
+   ["مقاس 28",520],
+   ["مقاس 30",650]
+  ],
+
+  shapes:[
+   ["تورتة 2 دور",1300],
+   ["تورتة 3 دور",1600],
+   ["منجاوي كبير",590],
+   ["منجاوي وسط",450],
+   ["بيضاوي كبير",590],
+   ["بيضاوي وسط",450],
+   ["قلب كبير",590],
+   ["قلب وسط",450],
+   ["قلب صغير",340]
+  ]
+ }
+};
+
+for(const k of Object.keys(D)){
+ for(const key of ["items","square","round","shapes"]){
+  if(D[k][key]){
+   D[k][key]=D[k][key].map(x=>({
+    name:x[0],
+    price:x[1]
+   }));
+  }
+ }
+}
+
+/* ================= CART ================= */
+
+let cart=JSON.parse(localStorage.getItem("skoonzcCart")||"[]");
+
+let audio;
+
+function sound(freq=700,dur=.07,type="sine"){
+ try{
+  audio ||= new(window.AudioContext||window.webkitAudioContext)();
+
+  if(audio.state==="suspended")
+   audio.resume();
+
+  let o=audio.createOscillator();
+  let g=audio.createGain();
+
+  o.type=type;
+  o.frequency.value=freq;
+
+  g.gain.setValueAtTime(.025,audio.currentTime);
+  g.gain.exponentialRampToValueAtTime(
+   .001,
+   audio.currentTime+dur
+  );
+
+  o.connect(g);
+  g.connect(audio.destination);
+
+  o.start();
+  o.stop(audio.currentTime+dur);
+
+ }catch(e){}
+}
+
+function vibrate(){
+ if(navigator.vibrate)
+  navigator.vibrate(18);
+}
+
+function save(){
+ localStorage.setItem(
+  "skoonzcCart",
+  JSON.stringify(cart)
+ );
+}
+
+function add(name,price){
+
+ sound(850,.08);
+ vibrate();
+
+ let x=cart.find(i=>i.name===name);
+
+ if(x)
+  x.qty++;
+ else
+  cart.push({
+   name,
+   price,
+   qty:1
+  });
+
+ save();
+ renderCart();
+ toast();
+
+ document.querySelector(".cartBtn")
+ .animate(
+  [
+   {transform:"scale(1)"},
+   {transform:"scale(1.18) rotate(-7deg)"},
+   {transform:"scale(1)"}
+  ],
+  {
+   duration:450
+  }
+ );
+}
+
+function qty(i,v){
+
+ sound(
+  v>0?900:450,
+  .06
+ );
+
+ cart[i].qty+=v;
+
+ if(cart[i].qty<1)
+  cart.splice(i,1);
+
+ save();
+ renderCart();
+}
+
+function remove(i){
+
+ sound(300,.08);
+
+ cart.splice(i,1);
+
+ save();
+ renderCart();
+}
+
+function clearCart(){
+
+ if(
+  cart.length &&
+  confirm("هل تريد تفريغ السلة؟")
+ ){
+  cart=[];
+  save();
+  renderCart();
+ }
+
+}
+
+/* ================= RENDER CART ================= */
+
+function renderCart(){
+
+ let box=document.getElementById("items");
+
+ let count=cart.reduce(
+  (a,x)=>a+x.qty,
+  0
+ );
+
+ let total=cart.reduce(
+  (a,x)=>a+x.price*x.qty,
+  0
+ );
+
+ document.getElementById("count").textContent=count;
+ document.getElementById("total").textContent=total;
+
+ if(!cart.length){
+
+  box.innerHTML=`
+   <div class="empty">
+    <i class="fa-solid fa-basket-shopping"></i>
+    <b>السلة لسه فاضية</b>
+    <small>اختار حاجة حلوة الأول ❤️</small>
+   </div>
+  `;
+
+  return;
+ }
+
+ box.innerHTML=cart.map((x,i)=>`
+
+  <div class="cartItem">
+
+   <div class="cartTop">
+
+    <div>
+     <div class="cartName">
+      ${x.name}
+     </div>
+
+     <div class="cartPrice">
+      ${x.price} ج.م
+     </div>
     </div>
 
-    <!-- زر التواصل العائم -->
-    <div class="fixed bottom-6 right-6 z-[60]">
-        <button onclick="toggleSocialModal()" class="fab-btn w-16 h-16 bg-gradient-to-tr from-caramel to-logoGold text-chocoDark rounded-full text-3xl shadow-[0_0_20px_rgba(217,119,6,0.6)] hover:scale-110 hover:rotate-12 transition-transform flex justify-center items-center border-2 border-beige">
-            <i class="fa-regular fa-comment-dots"></i>
-        </button>
+    <b style="color:var(--gold2)">
+     ${x.price*x.qty} ج
+    </b>
+
+   </div>
+
+   <div class="qty">
+
+    <button onclick="qty(${i},1)">
+     +
+    </button>
+
+    <strong>${x.qty}</strong>
+
+    <button onclick="qty(${i},-1)">
+     −
+    </button>
+
+    <button class="remove" onclick="remove(${i})">
+     <i class="fa-solid fa-trash"></i>
+    </button>
+
+   </div>
+
+  </div>
+
+ `).join("");
+}
+
+/* ================= CART OPEN ================= */
+
+function openCart(){
+
+ sound(500,.05);
+
+ document
+ .getElementById("drawer")
+ .classList.add("on");
+
+ document
+ .getElementById("overlay")
+ .classList.add("on");
+}
+
+function closeCart(){
+
+ document
+ .getElementById("drawer")
+ .classList.remove("on");
+
+ document
+ .getElementById("overlay")
+ .classList.remove("on");
+}
+
+/* ================= PRODUCT CARD ================= */
+
+function card(x){
+
+ return`
+
+  <article class="card">
+
+   <div class="cardTop">
+
+    <div class="name">
+     ${x.name}
     </div>
 
-    <!-- نافذة التواصل المنبثقة (بأشكال وحركات جديدة للأزرار) -->
-    <div id="social-modal-overlay" class="fixed inset-0 bg-black/80 z-[80] hidden backdrop-blur-sm" onclick="toggleSocialModal()"></div>
-    <div id="social-modal" class="fixed top-1/2 left-1/2 bg-chocoDark border-4 border-dashed border-caramel rounded-3xl p-6 z-[90] hidden shadow-2xl w-[90%] max-w-sm text-center">
-        <button onclick="toggleSocialModal()" class="absolute top-4 right-4 text-beige/50 hover:text-red-500 text-2xl transition-transform hover:scale-110 hover:rotate-90"><i class="fa-solid fa-times"></i></button>
-        <h3 class="text-3xl font-black text-logoGold mb-8 mt-2 title-font">تواصل معنا</h3>
-        
-        <div class="flex flex-col gap-6">
-            <!-- قسم الفيسبوك المطور -->
-            <div class="group flex flex-col items-center gap-4 bg-gradient-to-br from-fb/10 to-transparent p-5 rounded-3xl border-2 border-fb/30 hover:border-fb transition-all duration-300">
-                <div class="bg-fb p-3 rounded-full text-white shadow-[0_0_15px_rgba(24,119,242,0.6)] group-hover:scale-110 transition-transform duration-300">
-                    <i class="fa-brands fa-facebook-f text-3xl w-6 h-6 flex items-center justify-center"></i>
-                </div>
-                <div class="flex flex-col gap-3 w-full">
-                    <a href="https://www.facebook.com/share/18ywRDfP27/" target="_blank" class="w-full relative overflow-hidden bg-chocoDark border border-fb/50 hover:bg-fb hover:text-white text-beige py-3 rounded-xl text-lg font-bold transition-all duration-300 shadow-md group/btn flex justify-center items-center gap-2">
-                        <span>تابع صفحتنا 1</span>
-                        <i class="fa-solid fa-arrow-up-right-from-square text-sm opacity-0 group-hover/btn:opacity-100 transition-opacity"></i>
-                    </a>
-                    <a href="https://www.facebook.com/share/1BYeYhqNsU/" target="_blank" class="w-full relative overflow-hidden bg-chocoDark border border-fb/50 hover:bg-fb hover:text-white text-beige py-3 rounded-xl text-lg font-bold transition-all duration-300 shadow-md group/btn flex justify-center items-center gap-2">
-                        <span>تابع صفحتنا 2</span>
-                        <i class="fa-solid fa-arrow-up-right-from-square text-sm opacity-0 group-hover/btn:opacity-100 transition-opacity"></i>
-                    </a>
-                </div>
-            </div>
-
-            <!-- قسم الواتساب المطور -->
-            <div class="group flex flex-col items-center gap-4 bg-gradient-to-br from-wa/10 to-transparent p-5 rounded-3xl border-2 border-wa/30 hover:border-wa transition-all duration-300">
-                <div class="bg-wa p-3 rounded-full text-white shadow-[0_0_15px_rgba(37,211,102,0.6)] group-hover:scale-110 transition-transform duration-300">
-                    <i class="fa-brands fa-whatsapp text-3xl w-6 h-6 flex items-center justify-center"></i>
-                </div>
-                <div class="flex flex-col gap-3 w-full">
-                    <a href="https://wa.me/201029973960" target="_blank" class="w-full bg-chocoDark border border-wa/50 hover:bg-wa hover:text-white text-beige py-3 rounded-xl text-lg font-bold transition-all duration-300 shadow-md group/btn flex justify-center items-center gap-2">
-                        <span>فرع أسوان</span>
-                        <i class="fa-brands fa-whatsapp text-xl opacity-0 group-hover/btn:opacity-100 transition-opacity"></i>
-                    </a>
-                    <a href="https://wa.me/201029973959" target="_blank" class="w-full bg-chocoDark border border-wa/50 hover:bg-wa hover:text-white text-beige py-3 rounded-xl text-lg font-bold transition-all duration-300 shadow-md group/btn flex justify-center items-center gap-2">
-                        <span>فرع كوم أمبو</span>
-                        <i class="fa-brands fa-whatsapp text-xl opacity-0 group-hover/btn:opacity-100 transition-opacity"></i>
-                    </a>
-                </div>
-            </div>
-        </div>
+    <div class="price">
+     ${x.price}ج
     </div>
 
-    <!-- سلة المشتريات الجانبية -->
-    <div id="cart-overlay" class="fixed inset-0 bg-black/70 z-[70] hidden transition-opacity backdrop-blur-sm" onclick="toggleCart()"></div>
-    <div id="cart-sidebar" class="fixed top-0 right-0 w-[400px] max-w-[85vw] h-full bg-chocoDark border-l-4 border-dashed border-caramel z-[80] translate-x-full flex flex-col shadow-[0_0_40px_rgba(0,0,0,0.8)]">
-        <div class="p-6 border-b-2 border-caramel/40 flex justify-between items-center bg-chocoLight/80">
-            <h2 class="text-logoGold text-3xl font-black title-font drop-shadow-md"><i class="fa-solid fa-basket-shopping ml-2"></i> سلة طلباتي</h2>
-            <button onclick="toggleCart()" class="text-beige/50 hover:text-red-500 transition text-2xl bg-chocoDark w-10 h-10 rounded-full border border-caramel/30 flex items-center justify-center hover:scale-110">
-                <i class="fa-solid fa-times"></i>
-            </button>
-        </div>
-        
-        <div id="cart-items" class="flex-1 overflow-y-auto p-5 flex flex-col gap-4">
-            <div class="text-center text-beige/40 mt-20 text-xl font-bold flex flex-col items-center gap-4">
-                <i class="fa-solid fa-cookie text-5xl opacity-50"></i>
-                السلة فارغة حالياً
-            </div>
-        </div>
-        
-        <div class="p-6 border-t-2 border-caramel/40 bg-chocoLight/90">
-            <div class="flex justify-between items-center mb-6 text-2xl font-black bg-chocoDark p-4 rounded-xl border border-caramel/30">
-                <span class="text-beige">الإجمالي:</span>
-                <span id="cart-total" class="text-logoGold text-3xl">0 <span class="text-sm font-normal">ج.م</span></span>
-            </div>
-            <input type="text" id="customer-name" placeholder="👤 اكتب اسمك هنا..." class="w-full mb-4 px-5 py-4 bg-chocoDark border-2 border-caramel/50 rounded-xl text-beige font-bold focus:outline-none focus:border-logoGold transition text-lg placeholder-beige/40 shadow-inner">
-            
-            <select id="branch-select" class="w-full mb-6 px-5 py-4 bg-chocoDark border-2 border-caramel/50 rounded-xl text-beige font-bold focus:outline-none focus:border-logoGold transition appearance-none text-lg shadow-inner cursor-pointer">
-                <option value="فرع أسوان - حي العقاد">📍 فرع أسوان - حي العقاد</option>
-                <option value="فرع أسوان - كوم أمبو">📍 فرع أسوان - كوم أمبو</option>
-            </select>
+   </div>
 
-            <div class="flex gap-3">
-                <button onclick="checkout('01029973960')" class="flex-1 bg-gradient-to-r from-wa to-green-500 hover:from-green-500 hover:to-green-400 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition shadow-[0_5px_15px_rgba(34,197,94,0.4)] hover:scale-[1.02]">
-                    لأسوان <i class="fa-brands fa-whatsapp text-2xl"></i>
-                </button>
-                <button onclick="checkout('01029973959')" class="flex-1 bg-gradient-to-r from-wa to-green-500 hover:from-green-500 hover:to-green-400 text-white font-bold py-4 rounded-xl flex items-center justify-center gap-2 transition shadow-[0_5px_15px_rgba(34,197,94,0.4)] hover:scale-[1.02]">
-                    لكوم أمبو <i class="fa-brands fa-whatsapp text-2xl"></i>
-                </button>
-            </div>
-        </div>
+   <button
+    class="add"
+    onclick="add('${x.name.replaceAll("'","\\'")}',${x.price})">
+
+    <i class="fa-solid fa-plus"></i>
+    أضف للطلب
+
+   </button>
+
+  </article>
+
+ `;
+}
+
+/* ================= CATEGORY ================= */
+
+function showCategory(k){
+
+ sound(560,.06);
+
+ document.getElementById("menuTitle")
+ .textContent=D[k].title;
+
+ document.getElementById("grid")
+ .className="grid";
+
+ document.getElementById("grid")
+ .innerHTML=D[k].items
+ .map(card)
+ .join("");
+
+ document.getElementById("menu")
+ .style.display="block";
+
+ setTimeout(()=>{
+
+  document.getElementById("menu")
+  .scrollIntoView({
+   behavior:"smooth",
+   block:"start"
+  });
+
+ },40);
+}
+
+/* ================= CAKES ================= */
+
+function showCakes(){
+
+ sound(560,.06);
+
+ document.getElementById("menuTitle")
+ .textContent="التورت";
+
+ let html="";
+
+ for(
+  const [title,key]
+  of[
+   ["تورت مربعة","square"],
+   ["تورت مدورة","round"],
+   ["تورت الأشكال","shapes"]
+  ]
+ ){
+
+  html+=`
+
+   <div class="cakeCol">
+
+    <h3>${title}</h3>
+
+    ${D.cakes[key].map(x=>`
+
+     <div class="cakeRow">
+
+      <span>${x.name}</span>
+
+      <span
+       style="
+       display:flex;
+       align-items:center;
+       gap:8px">
+
+       <b style="color:var(--gold2)">
+        ${x.price}ج
+       </b>
+
+       <button
+        class="miniAdd"
+        onclick="add('${x.name}',${x.price})">
+
+        <i class="fa-solid fa-plus"></i>
+
+       </button>
+
+      </span>
+
+     </div>
+
+    `).join("")}
+
+   </div>
+
+  `;
+
+ }
+
+ document.getElementById("grid")
+ .className="cakes";
+
+ document.getElementById("grid")
+ .innerHTML=html;
+
+ document.getElementById("menu")
+ .style.display="block";
+
+ setTimeout(()=>{
+
+  document.getElementById("menu")
+  .scrollIntoView({
+   behavior:"smooth"
+  });
+
+ },40);
+}
+
+function closeMenu(){
+
+ document.getElementById("menu")
+ .style.display="none";
+
+ document.getElementById("grid")
+ .className="grid";
+}
+
+/* ================= CHECKOUT ================= */
+
+function checkout(phone){
+
+ if(!cart.length){
+  alert("السلة فارغة");
+  return;
+ }
+
+ let name=
+ document.getElementById("name")
+ .value.trim();
+
+ if(!name){
+  alert("اكتب اسم العميل أولاً");
+  return;
+ }
+
+ let branch=
+ document.getElementById("branch").value;
+
+ let delivery=
+ document.getElementById("delivery").value;
+
+ let note=
+ document.getElementById("note")
+ .value.trim();
+
+ let total=
+ cart.reduce(
+  (a,x)=>a+x.price*x.qty,
+  0
+ );
+
+ let m=
+ `*طلب جديد من سكونز 🍰*\\n\\n`;
+
+ m+=
+ `👤 العميل: *${name}*\\n`;
+
+ m+=
+ `📍 الفرع: *${branch}*\\n`;
+
+ m+=
+ `🚚 الاستلام: *${delivery}*\\n\\n`;
+
+ m+=
+ `🛍️ *الطلبات:*\\n`;
+
+ cart.forEach(x=>{
+
+  m+=
+  `▪️ ${x.name} — ${x.qty} × ${x.price} = ${x.qty*x.price} ج\\n`;
+
+ });
+
+ m+=
+ `\\n💰 *الإجمالي: ${total} ج.م*`;
+
+ if(note){
+
+  m+=
+  `\\n\\n📝 *ملاحظات:*\\n${note}`;
+
+ }
+
+ m+=
+ `\\n\\nشكراً لاختياركم سكونز ❤️`;
+
+ window.open(
+  `https://wa.me/${phone}?text=${encodeURIComponent(m)}`,
+  "_blank"
+ );
+}
+
+/* ================= TOAST ================= */
+
+let timer;
+
+function toast(){
+
+ let t=document.getElementById("toast");
+
+ t.classList.add("show");
+
+ clearTimeout(timer);
+
+ timer=setTimeout(
+  ()=>t.classList.remove("show"),
+  1900
+ );
+}
+
+/* ================= SCROLL ================= */
+
+function goCats(){
+
+ document
+ .getElementById("categories")
+ .scrollIntoView({
+  behavior:"smooth"
+ });
+}
+
+/* ================= SEARCH ================= */
+
+document
+.getElementById("search")
+.addEventListener(
+ "input",
+ e=>{
+
+  let q=e.target.value
+  .trim()
+  .toLowerCase();
+
+  let r=document
+  .getElementById("results");
+
+  if(!q){
+
+   r.style.display="none";
+   return;
+
+  }
+
+  let a=[];
+
+  for(
+   let k of[
+    "oriental",
+    "western",
+    "bakery"
+   ]
+  ){
+
+   a.push(...D[k].items);
+
+  }
+
+  for(
+   let k of[
+    "square",
+    "round",
+    "shapes"
+   ]
+  ){
+
+   a.push(...D.cakes[k]);
+
+  }
+
+  a=a
+  .filter(x=>
+   x.name
+   .toLowerCase()
+   .includes(q)
+  )
+  .slice(0,15);
+
+  r.style.display="block";
+
+  r.innerHTML=a.length?
+
+   a.map(x=>`
+
+    <div
+     style="
+     display:flex;
+     justify-content:space-between;
+     align-items:center;
+     padding:12px;
+     border-radius:17px;
+     background:#ffffff06;
+     margin-bottom:5px">
+
+     <b>${x.name}</b>
+
+     <span
+      style="
+      display:flex;
+      gap:8px;
+      align-items:center;
+      color:var(--gold2)">
+
+      ${x.price}ج
+
+      <button
+       class="miniAdd"
+       onclick="add('${x.name}',${x.price})">
+
+       +
+
+      </button>
+
+     </span>
+
     </div>
 
-    <!-- شريط التنقل -->
-    <nav id="navbar" class="fixed w-full z-50 transition-all duration-300 py-4 bg-transparent text-beige">
-        <div class="container mx-auto px-4 md:px-8 flex flex-wrap justify-between items-center gap-4">
-            <a href="#" class="flex items-center gap-3">
-                <div class="relative">
-                    <img src="https://res.cloudinary.com/dbahe7lxz/image/upload/q_auto,f_auto,w_150/v1786911357/idraaak/tgylfwmhztwkgth1upm8.jpg" alt="سكونز" class="h-16 w-16 md:h-20 md:w-20 rounded-full border-4 border-caramel object-cover shadow-[0_0_20px_rgba(217,119,6,0.6)] z-10 relative bg-chocoDark">
-                </div>
-            </a>
+   `).join("")
 
-            <!-- البحث -->
-            <div class="flex-grow max-w-xl order-3 md:order-2 w-full md:w-auto relative group">
-                <input type="text" id="searchInput" placeholder="ابحث عن صنفك المفضل..." 
-                       class="w-full bg-chocoDark/95 border-2 border-caramel/70 text-beige px-6 py-3 rounded-full focus:outline-none focus:border-logoGold transition-all placeholder-beige/50 text-lg font-bold shadow-[0_5px_15px_rgba(0,0,0,0.5)] pr-12">
-                <i class="fas fa-search absolute right-5 top-1/2 transform -translate-y-1/2 text-logoGold text-xl"></i>
-                
-                <div id="search-dropdown" class="absolute w-full mt-3 bg-chocoLight/95 backdrop-blur-md border-2 border-caramel rounded-2xl shadow-2xl hidden max-h-[50vh] overflow-y-auto z-50 p-2">
-                    <div id="search-results-grid" class="flex flex-col gap-2"></div>
-                </div>
-            </div>
+   :
 
-            <!-- زر السلة -->
-            <div class="order-2 md:order-3">
-                <button onclick="toggleCart()" id="nav-cart-btn" class="relative text-chocoDark bg-gradient-to-tr from-caramel to-logoGold hover:from-logoGold hover:to-caramel transition p-3 md:p-4 rounded-full border-2 border-beige shadow-[0_0_15px_rgba(217,119,6,0.6)]">
-                    <i class="fa-solid fa-basket-shopping text-2xl md:text-3xl"></i>
-                    <span id="nav-cart-count" class="absolute -top-2 -right-2 bg-red-600 text-white text-sm font-black w-7 h-7 flex items-center justify-center rounded-full border-2 border-white shadow-lg">0</span>
-                </button>
-            </div>
-        </div>
-    </nav>
+   `
+    <div
+     style="
+     padding:20px;
+     text-align:center;
+     color:#fff7">
 
-    <section id="hero" class="relative min-h-[50vh] md:min-h-[60vh] flex flex-col items-center justify-center px-4 text-center pt-28 pb-10">
-        <h1 class="text-7xl md:text-[120px] lg:text-[180px] font-black neon-text title-font mb-4 tracking-wider">سكونز</h1>
-        <!-- تم تغيير الجملة هنا -->
-        <p class="text-4xl md:text-6xl text-caramel font-bold drop-shadow-lg title-font mt-[-10px] md:mt-[-20px]">سكر زمان</p>
-    </section>
+     مفيش نتيجة للصنف ده 😔
 
-    <main class="container mx-auto px-4 md:px-8 pb-20 flex flex-col items-center">
-        
-        <div class="grid grid-cols-1 md:grid-cols-2 gap-12 w-full max-w-6xl mb-16">
-            
-            <div class="led-border h-72 md:h-[400px] group" onclick="showCategory('oriental')">
-                <div class="led-content">
-                    <img src="https://res.cloudinary.com/dbahe7lxz/image/upload/q_auto,f_auto,w_800/v1786918048/idraaak/kvjtlayfnlwc9phrbnh9.jpg" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100">
-                    <div class="absolute inset-0 bg-gradient-to-t from-chocoDark via-chocoDark/40 to-transparent"></div>
-                    <div class="absolute bottom-10 left-0 w-full flex items-center justify-center">
-                        <h3 class="text-5xl md:text-6xl font-black text-beige drop-shadow-[0_5px_15px_rgba(0,0,0,1)] title-font tracking-wide">الشرقي</h3>
-                    </div>
-                </div>
-            </div>
+    </div>
+   `;
 
-            <div class="led-border h-72 md:h-[400px] group" onclick="showCategory('cakes')">
-                <div class="led-content">
-                    <img src="https://res.cloudinary.com/dbahe7lxz/image/upload/q_auto,f_auto,w_800/v1786918217/idraaak/fycuk0t9ieamup9yh0jg.jpg" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100">
-                    <div class="absolute inset-0 bg-gradient-to-t from-chocoDark via-chocoDark/40 to-transparent"></div>
-                    <div class="absolute bottom-10 left-0 w-full flex items-center justify-center">
-                        <h3 class="text-5xl md:text-6xl font-black text-beige drop-shadow-[0_5px_15px_rgba(0,0,0,1)] title-font tracking-wide">التورت</h3>
-                    </div>
-                </div>
-            </div>
+ }
+);
 
-            <div class="led-border h-72 md:h-[400px] group" onclick="showCategory('western')">
-                <div class="led-content">
-                    <img src="https://res.cloudinary.com/dbahe7lxz/image/upload/q_auto,f_auto,w_800/v1786918567/idraaak/lo9qq0l32xcf7wy4m2un.jpg" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100">
-                    <div class="absolute inset-0 bg-gradient-to-t from-chocoDark via-chocoDark/40 to-transparent"></div>
-                    <div class="absolute bottom-10 left-0 w-full flex items-center justify-center">
-                        <h3 class="text-5xl md:text-6xl font-black text-beige drop-shadow-[0_5px_15px_rgba(0,0,0,1)] title-font tracking-wide">الغربي</h3>
-                    </div>
-                </div>
-            </div>
+/* ================= CLOSE SEARCH ================= */
 
-            <div class="led-border h-72 md:h-[400px] group" onclick="showCategory('bakery')">
-                <div class="led-content">
-                    <img src="https://res.cloudinary.com/dbahe7lxz/image/upload/q_auto,f_auto,w_800/v1786918390/idraaak/y5jx1wsapyojcpapxisc.jpg" class="absolute inset-0 w-full h-full object-cover transition-transform duration-700 group-hover:scale-110 opacity-90 group-hover:opacity-100">
-                    <div class="absolute inset-0 bg-gradient-to-t from-chocoDark via-chocoDark/40 to-transparent"></div>
-                    <div class="absolute bottom-10 left-0 w-full flex items-center justify-center">
-                        <h3 class="text-5xl md:text-6xl font-black text-beige drop-shadow-[0_5px_15px_rgba(0,0,0,1)] title-font tracking-wide">المخبوزات</h3>
-                    </div>
-                </div>
-            </div>
+document.addEventListener(
+ "click",
+ e=>{
 
-        </div>
+  if(
+   !document
+   .getElementById("search")
+   .contains(e.target)
 
-        <div id="display-area" class="w-full max-w-6xl">
-            
-            <div id="menu-content" class="menu-container w-full">
-                <div class="flex justify-between items-center mb-10 border-b-4 border-dashed border-caramel/40 pb-6 relative">
-                    <h3 id="category-title" class="text-4xl md:text-5xl font-black text-logoGold title-font"></h3>
-                    <button onclick="closeCategory()" class="text-beige/70 hover:text-white hover:bg-red-600 transition-all p-3 bg-chocoDark rounded-full border-2 border-caramel shadow-lg absolute -top-8 -left-2 md:static">
-                        <i class="fa-solid fa-xmark text-2xl flex items-center justify-center w-6 h-6"></i>
-                    </button>
-                </div>
-                <div id="items-grid" class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6"></div>
-            </div>
-            
-            <div id="cakes-content" class="menu-container w-full">
-                <div class="flex justify-between items-center mb-10 border-b-4 border-dashed border-caramel/40 pb-6 relative">
-                    <h3 class="text-4xl md:text-5xl font-black text-logoGold title-font flex items-center gap-4">
-                        <i class="fa-solid fa-cake-candles text-caramel"></i> التورت
-                    </h3>
-                    <button onclick="closeCategory()" class="text-beige/70 hover:text-white hover:bg-red-600 transition-all p-3 bg-chocoDark rounded-full border-2 border-caramel shadow-lg absolute -top-8 -left-2 md:static">
-                        <i class="fa-solid fa-xmark text-2xl flex items-center justify-center w-6 h-6"></i>
-                    </button>
-                </div>
-                <div class="grid grid-cols-1 lg:grid-cols-3 gap-8">
-                    <div class="bg-chocoDark p-6 rounded-3xl border-2 border-caramel/30 shadow-inner">
-                        <div class="flex items-center gap-3 mb-6 bg-chocoLight p-3 rounded-xl border border-caramel/50">
-                            <div class="w-6 h-6 bg-logoGold border-2 border-beige"></div>
-                            <h4 class="text-2xl font-bold text-beige">تورت مربعة</h4>
-                        </div>
-                        <div id="cakes-square" class="flex flex-col gap-4"></div>
-                    </div>
-                    <div class="bg-chocoDark p-6 rounded-3xl border-2 border-caramel/30 shadow-inner">
-                        <div class="flex items-center gap-3 mb-6 bg-chocoLight p-3 rounded-xl border border-caramel/50">
-                            <div class="w-6 h-6 bg-logoGold border-2 border-beige rounded-full"></div>
-                            <h4 class="text-2xl font-bold text-beige">تورت مدورة</h4>
-                        </div>
-                        <div id="cakes-round" class="flex flex-col gap-4"></div>
-                    </div>
-                    <div class="bg-chocoDark p-6 rounded-3xl border-2 border-caramel/30 shadow-inner">
-                        <div class="flex items-center gap-3 mb-6 bg-chocoLight p-3 rounded-xl border border-caramel/50">
-                            <i class="fa-solid fa-heart text-2xl text-logoGold"></i>
-                            <h4 class="text-2xl font-bold text-beige">تورت الأشكال</h4>
-                        </div>
-                        <div id="cakes-shapes" class="flex flex-col gap-4"></div>
-                    </div>
-                </div>
-            </div>
-        </div>
+   &&
 
-    </main>
+   !document
+   .getElementById("results")
+   .contains(e.target)
+  ){
 
-    <footer class="bg-chocoDark border-t-4 border-dashed border-logoGold text-beige pt-16 pb-8 text-center mt-10 relative">
-        <div class="absolute -top-6 left-1/2 transform -translate-x-1/2 bg-chocoDark px-6 py-2 border-4 border-dashed border-logoGold rounded-full">
-            <i class="fa-solid fa-star text-logoGold text-2xl"></i>
-        </div>
-        <img src="https://res.cloudinary.com/dbahe7lxz/image/upload/q_auto,f_auto,w_150/v1786911357/idraaak/tgylfwmhztwkgth1upm8.jpg" alt="لوجو سكونز" class="h-24 w-24 mx-auto rounded-full border-4 border-logoGold object-cover shadow-[0_0_20px_rgba(202,138,4,0.6)] mb-4">
-        <h2 class="text-4xl font-black text-logoGold mb-2 title-font">سكونز</h2>
-        <p class="text-lg text-beige/80 mb-6">صُنع بحب.. من أجلكم</p>
-        <p class="text-sm font-bold text-beige/50">&copy; 2026 سكونز للحلويات والمخبوزات. جميع الحقوق محفوظة.</p>
-    </footer>
+   document
+   .getElementById("results")
+   .style.display="none";
 
-    <script>
-        const menuData = {
-            oriental: { title: "الحلويات الشرقية", items: [
-                { name: "بسبوسة سادة", price: 150 }, { name: "بسبوسة قشطة", price: 240 }, { name: "بسبوسة تركي", price: 240 },
-                { name: "بسيمة - هريسة", price: 240 }, { name: "اساور فستق", price: 260 }, { name: "اساور لوز", price: 260 },
-                { name: "اساور نوتيلا", price: 240 }, { name: "بورمة مكسرات", price: 260 }, { name: "رواني - بلح الشام", price: 240 },
-                { name: "بلح الشام قشطة", price: 240 }, { name: "بقلاوة كريمة", price: 260 }, { name: "بقلاوة مكسرات", price: 240 },
-                { name: "بقلاوة حليب", price: 240 }, { name: "بقلاوة سادة", price: 240 }, { name: "رموش", price: 240 },
-                { name: "رموش مكسرات", price: 260 }, { name: "رموش مشكل", price: 240 }, { name: "مشكل صيامي", price: 240 },
-                { name: "شرقي مشكل - لوكس", price: 240 }, { name: "سكينة جوز هند - عجوة", price: 240 }, { name: "قطايف مكسرات", price: 260 },
-                { name: "قطايف كريمة", price: 240 }, { name: "كنافة ساده - عزيزية", price: 240 }, { name: "كنافة قشطة مانجا", price: 240 },
-                { name: "كنافة قشطة", price: 240 }, { name: "كنافة مكسرات", price: 260 }, { name: "كنافة صوابع", price: 240 },
-                { name: "كنافة كريمة", price: 240 }, { name: "كنافة نوتيلا - لوتس", price: 240 }, { name: "لقمة القاضي", price: 240 },
-                { name: "حبيبة - مدلعة", price: 240 }
-            ]},
-            cakes: { title: "التورت", 
-                square: [
-                    { name: "مربع 20*20", price: 390 }, { name: "مربع 24*24", price: 470 }, { name: "مربع 30*20", price: 470 },
-                    { name: "مربع 30*30", price: 650 }, { name: "مربع 40*30", price: 800 }, { name: "مربع 40*40", price: 950 },
-                    { name: "مربع 60*40", price: 1550 }
-                ],
-                round: [
-                    { name: "تورتة ميني", price: 150 }, { name: "مقاس 10", price: 150 }, { name: "مقاس 15", price: 190 },
-                    { name: "مقاس 16", price: 220 }, { name: "مقاس 18", price: 250 }, { name: "مقاس 20", price: 320 },
-                    { name: "مقاس 22", price: 380 }, { name: "مقاس 24", price: 420 }, { name: "مقاس 26", price: 460 },
-                    { name: "مقاس 28", price: 520 }, { name: "مقاس 30", price: 650 }
-                ],
-                shapes: [
-                    { name: "تورتة 2 دور", price: 1300 }, { name: "تورتة 3 دور", price: 1600 }, { name: "منجاوي كبير", price: 590 },
-                    { name: "منجاوي وسط", price: 450 }, { name: "بيضاوي كبير", price: 590 }, { name: "بيضاوي وسط", price: 450 },
-                    { name: "قلب كبير", price: 590 }, { name: "قلب وسط", price: 450 }, { name: "قلب صغير", price: 340 }
-                ]
-            },
-            western: { title: "الحلويات الغربية", items: [
-                { name: "اكلير", price: 35 }, { name: "ملفيه", price: 50 }, { name: "براونيز", price: 50 }, { name: "هوهوز", price: 35 },
-                { name: "ديسباسيتو", price: 65 }, { name: "بيفتيرول", price: 45 }, { name: "فادج", price: 50 }, { name: "شطرنج", price: 40 },
-                { name: "قشطوطة", price: 90 }, { name: "انديان", price: 50 }, { name: "ريد", price: 50 }, { name: "موس", price: 50 },
-                { name: "هرم", price: 35 }, { name: "تارت", price: 50 }, { name: "قنبلة", price: 40 }, { name: "تشيز كيك", price: 50 },
-                { name: "جاتو لوكس", price: 30 }, { name: "طاجن أم علي", price: 50 }, { name: "انجلش كيك", price: 80 },
-                { name: "طاجن نوتيلا", price: 70 }, { name: "مولتن كبير", price: 85 }, { name: "مولتن صغير", price: 60 }
-            ]},
-            bakery: { title: "المخبوزات", items: [
-                { name: "كعك ملبن", price: 225 }, { name: "كعك سادة", price: 225 }, { name: "كعك عجوة", price: 225 }, { name: "كعك مكسرات", price: 225 },
-                { name: "غريبة", price: 225 }, { name: "برازق", price: 225 }, { name: "سابلية", price: 260 }, { name: "لانكشير", price: 225 },
-                { name: "بسكويت زبدة", price: 225 }, { name: "بسكويت نشادر", price: 225 }, { name: "بسكويت برتقال", price: 225 },
-                { name: "بسكويت شيكولاتة", price: 225 }, { name: "كوكيز أبيض", price: 225 }, { name: "كوكيز شيكولاتة", price: 225 },
-                { name: "بيتي فور سادة", price: 225 }, { name: "بيتي فور مكسرات", price: 260 }
-            ]}
-        };
+  }
 
-        const AudioContext = window.AudioContext || window.webkitAudioContext;
-        let audioCtx;
+ }
+);
 
-        function playClickSound() {
-            try {
-                if (!audioCtx) audioCtx = new AudioContext();
-                if (audioCtx.state === 'suspended') audioCtx.resume();
-                
-                const oscillator = audioCtx.createOscillator();
-                const gainNode = audioCtx.createGain();
-                
-                oscillator.type = 'sine';
-                oscillator.frequency.setValueAtTime(800, audioCtx.currentTime); 
-                gainNode.gain.setValueAtTime(0.03, audioCtx.currentTime);
-                gainNode.gain.exponentialRampToValueAtTime(0.001, audioCtx.currentTime + 0.1);
-                
-                oscillator.connect(gainNode);
-                gainNode.connect(audioCtx.destination);
-                oscillator.start();
-                oscillator.stop(audioCtx.currentTime + 0.1);
-            } catch(e) { }
-        }
+/* ================= REVEAL ================= */
 
-        let cart = [];
+const io=
+new IntersectionObserver(
+ es=>es.forEach(e=>{
 
-        function addToCart(name, price) {
-            playClickSound();
-            let item = cart.find(i => i.name === name);
-            if (item) {
-                item.qty++;
-            } else {
-                cart.push({ name, price, qty: 1 });
-            }
-            updateCartUI();
-            showToast();
-            
-            const cartBtn = document.getElementById('nav-cart-btn');
-            cartBtn.classList.remove('cart-bump');
-            void cartBtn.offsetWidth; 
-            cartBtn.classList.add('cart-bump');
-        }
+  if(e.isIntersecting)
+   e.target.classList.add("show");
 
-        let toastTimeout;
-        function showToast() {
-            const toast = document.getElementById('toast');
-            toast.classList.remove('opacity-0', 'translate-y-[-20px]');
-            toast.classList.add('opacity-100', 'translate-y-0');
-            clearTimeout(toastTimeout);
-            toastTimeout = setTimeout(() => {
-                toast.classList.remove('opacity-100', 'translate-y-0');
-                toast.classList.add('opacity-0', 'translate-y-[-20px]');
-            }, 2500);
-        }
+ }),
+ {
+  threshold:.12
+ }
+);
 
-        function changeQty(index, change) {
-            playClickSound();
-            cart[index].qty += change;
-            if (cart[index].qty <= 0) {
-                cart.splice(index, 1);
-            }
-            updateCartUI();
-        }
+document
+.querySelectorAll(".reveal")
+.forEach(x=>io.observe(x));
 
-        function updateCartUI() {
-            const navCartCount = document.getElementById('nav-cart-count');
-            const cartItemsContainer = document.getElementById('cart-items');
-            const cartTotal = document.getElementById('cart-total');
+/* ================= CLICK SOUND ================= */
 
-            let totalQty = cart.reduce((sum, item) => sum + item.qty, 0);
-            navCartCount.innerText = totalQty;
+document.addEventListener(
+ "click",
+ e=>{
 
-            cartItemsContainer.innerHTML = '';
-            let total = 0;
-            
-            if(cart.length === 0) {
-                cartItemsContainer.innerHTML = `
-                    <div class="text-center text-beige/40 mt-20 text-xl font-bold flex flex-col items-center gap-4">
-                        <i class="fa-solid fa-cookie text-5xl opacity-50"></i>
-                        السلة فارغة حالياً
-                    </div>`;
-            } else {
-                cart.forEach((item, index) => {
-                    let itemTotal = item.price * item.qty;
-                    total += itemTotal;
-                    cartItemsContainer.innerHTML += `
-                        <div class="flex justify-between items-center bg-chocoDark p-4 rounded-2xl border border-caramel/40 shadow-md">
-                            <div>
-                                <h4 class="text-beige font-bold text-lg mb-1">${item.name}</h4>
-                                <p class="text-logoGold font-black">${item.price} ج</p>
-                            </div>
-                            <div class="flex items-center gap-3 bg-chocoLight rounded-xl p-1 border border-caramel/30 shadow-inner">
-                                <button onclick="changeQty(${index}, 1)" class="text-green-400 hover:bg-chocoDark w-8 h-8 rounded-lg text-xl flex justify-center items-center transition font-bold">+</button>
-                                <span class="text-beige font-black text-lg w-5 text-center">${item.qty}</span>
-                                <button onclick="changeQty(${index}, -1)" class="text-red-400 hover:bg-chocoDark w-8 h-8 rounded-lg text-xl flex justify-center items-center transition font-bold">-</button>
-                            </div>
-                        </div>
-                    `;
-                });
-            }
-            cartTotal.innerHTML = `${total} <span class="text-sm font-normal">ج.م</span>`;
-        }
+  if(e.target.closest("button,a"))
+   sound(620,.035);
 
-        function toggleCart() {
-            playClickSound();
-            const sidebar = document.getElementById('cart-sidebar');
-            const overlay = document.getElementById('cart-overlay');
-            sidebar.classList.toggle('cart-open');
-            overlay.classList.toggle('hidden');
-        }
+ }
+);
 
-        function checkout(phoneNum) {
-            const name = document.getElementById('customer-name').value.trim();
-            const branch = document.getElementById('branch-select').value;
+/* ================= HERO PARALLAX ================= */
 
-            if (!name) {
-                const nameInput = document.getElementById('customer-name');
-                nameInput.classList.add('border-red-500', 'ring-2', 'ring-red-500');
-                nameInput.placeholder = "نسيت كتابة اسمك يا فندم!";
-                setTimeout(() => {
-                    nameInput.classList.remove('border-red-500', 'ring-2', 'ring-red-500');
-                    nameInput.placeholder = "👤 اكتب اسمك هنا...";
-                }, 3000);
-                return;
-            }
-            if (cart.length === 0) return;
+const hero=
+document.getElementById("heroPic");
 
-            let message = `*طلب جديد من سكونز 🎂*\n\n👤 العميل: *${name}*\n📍 الفرع: *${branch}*\n\n🛍️ الطلبات:\n`;
-            let total = 0;
-            cart.forEach(item => {
-                let itemTotal = item.price * item.qty;
-                total += itemTotal;
-                message += `▪️ ${item.name} (الكمية: ${item.qty}) = ${itemTotal} ج\n`;
-            });
-            message += `\n💰 الإجمالي الكلي: *${total} ج.م*`;
+hero.addEventListener(
+ "mousemove",
+ e=>{
 
-            window.open(`https://wa.me/2${phoneNum}?text=${encodeURIComponent(message)}`, '_blank');
-        }
+  let x=
+   (e.clientX/innerWidth-.5)*10;
 
-        function createHTMLItem(item) {
-            return `
-                <div class="menu-item-card p-4 flex flex-col gap-3">
-                    <div class="flex justify-between items-center w-full">
-                        <span class="text-lg font-bold text-beige">${item.name}</span>
-                        <div class="bg-chocoDark px-3 py-1 rounded-full border border-caramel/50 shadow-inner">
-                            <span class="text-xl font-black text-logoGold">${item.price}<span class="text-xs font-normal">ج</span></span>
-                        </div>
-                    </div>
-                    <button onclick="addToCart('${item.name}', ${item.price})" class="add-btn w-full text-chocoDark font-black py-2.5 mt-2 flex justify-center items-center gap-2 text-lg">
-                        <i class="fa-solid fa-cart-plus"></i> أضف للسلة
-                    </button>
-                </div>
-            `;
-        }
+  let y=
+   (e.clientY/innerHeight-.5)*6;
 
-        function closeCategory() {
-            document.getElementById('menu-content').style.display = 'none';
-            document.getElementById('cakes-content').style.display = 'none';
-        }
+  hero.style.transform=
+   `scale(1.08) translate(${x}px,${y}px)`;
 
-        function showCategory(catKey) {
-            playClickSound();
-            closeCategory();
+ }
+);
 
-            if (catKey === 'cakes') {
-                document.getElementById('cakes-content').style.display = 'block';
-                document.getElementById('cakes-square').innerHTML = menuData.cakes.square.map(createHTMLItem).join('');
-                document.getElementById('cakes-round').innerHTML = menuData.cakes.round.map(createHTMLItem).join('');
-                document.getElementById('cakes-shapes').innerHTML = menuData.cakes.shapes.map(createHTMLItem).join('');
-            } else {
-                document.getElementById('menu-content').style.display = 'block';
-                const catInfo = menuData[catKey];
-                document.getElementById('category-title').innerText = catInfo.title;
-                document.getElementById('items-grid').innerHTML = catInfo.items.map(createHTMLItem).join('');
-            }
-            
-            setTimeout(() => {
-                const yOffset = -100; 
-                const element = document.getElementById('display-area');
-                const y = element.getBoundingClientRect().top + window.pageYOffset + yOffset;
-                window.scrollTo({top: y, behavior: 'smooth'});
-            }, 100);
-        }
+hero.addEventListener(
+ "mouseleave",
+ ()=>{
+  hero.style.transform="scale(1.05)";
+ }
+);
 
-        // --- كود النافذة المنبثقة بحركات الدخول والخروج الجديدة ---
-        function toggleSocialModal() {
-            playClickSound();
-            const modal = document.getElementById('social-modal');
-            const overlay = document.getElementById('social-modal-overlay');
-            
-            if(modal.classList.contains('modal-active')) {
-                // إغلاق (إزالة الكلاسات وانتظار الحركة لتنتهي ثم إخفاء العنصر)
-                modal.classList.remove('modal-active');
-                overlay.classList.remove('overlay-active');
-                setTimeout(() => {
-                    modal.classList.add('hidden');
-                    overlay.classList.add('hidden');
-                }, 400); // 400ms وهو نفس وقت الـ transition
-            } else {
-                // فتح (إظهار العنصر ثم إضافة كلاسات الحركة بفاصل زمني بسيط جداً)
-                modal.classList.remove('hidden');
-                overlay.classList.remove('hidden');
-                setTimeout(() => {
-                    modal.classList.add('modal-active');
-                    overlay.classList.add('overlay-active');
-                }, 10);
-            }
-        }
+/* ================= INIT ================= */
 
-        const searchInput = document.getElementById('searchInput');
-        const searchDropdown = document.getElementById('search-dropdown');
-        const searchResultsGrid = document.getElementById('search-results-grid');
+renderCart();
 
-        searchInput.addEventListener('input', (e) => {
-            const term = e.target.value.trim().toLowerCase();
-            if(term === '') {
-                searchDropdown.classList.add('hidden');
-                return;
-            }
+</script>
 
-            searchDropdown.classList.remove('hidden');
-            searchResultsGrid.innerHTML = '';
-            let found = false;
-
-            ['oriental', 'western', 'bakery'].forEach(cat => {
-                menuData[cat].items.forEach(item => {
-                    if(item.name.toLowerCase().includes(term)) { searchResultsGrid.innerHTML += createSearchItem(item); found = true; }
-                });
-            });
-
-            ['square', 'round', 'shapes'].forEach(subCat => {
-                menuData.cakes[subCat].forEach(item => {
-                    if(item.name.toLowerCase().includes(term)) { searchResultsGrid.innerHTML += createSearchItem(item); found = true; }
-                });
-            });
-
-            if(!found) searchResultsGrid.innerHTML = `<div class="text-center text-beige/70 py-4 font-bold">عذراً، لم نجد الصنف!</div>`;
-        });
-
-        function createSearchItem(item) {
-            return `
-                <div class="flex justify-between items-center bg-chocoDark p-3 rounded-xl border border-caramel/30 hover:border-logoGold transition-colors">
-                    <span class="text-beige font-bold">${item.name}</span>
-                    <div class="flex items-center gap-3">
-                        <span class="text-logoGold font-black">${item.price}ج</span>
-                        <button onclick="addToCart('${item.name}', ${item.price})" class="bg-caramel hover:bg-logoGold text-chocoDark w-8 h-8 rounded-full flex justify-center items-center transition shadow-md">
-                            <i class="fa-solid fa-plus"></i>
-                        </button>
-                    </div>
-                </div>
-            `;
-        }
-
-        document.addEventListener('click', (e) => {
-            if (!searchInput.contains(e.target) && !searchDropdown.contains(e.target)) {
-                searchDropdown.classList.add('hidden');
-            }
-        });
-
-        const emojis = ['🎂', '🧁', '🥐', '🍰', '🍩', '🍪', '🍫'];
-        const floatContainer = document.getElementById('floating-container');
-        let emojiCount = 0;
-        
-        function createFloatingEmoji() {
-            if(emojiCount > 6) return; 
-            const el = document.createElement('div');
-            el.className = 'floating-emoji';
-            el.innerText = emojis[Math.floor(Math.random() * emojis.length)];
-            el.style.left = Math.random() * 90 + 'vw';
-            el.style.animationDuration = (Math.random() * 10 + 15) + 's'; 
-            floatContainer.appendChild(el);
-            emojiCount++;
-            setTimeout(() => { el.remove(); emojiCount--; }, 20000);
-        }
-        setInterval(createFloatingEmoji, 2500);
-
-        const navbar = document.getElementById('navbar');
-        window.addEventListener('scroll', () => {
-            if (window.scrollY > 30) {
-                navbar.classList.add('nav-scrolled', 'py-1');
-                navbar.classList.remove('py-4');
-            } else {
-                navbar.classList.remove('nav-scrolled', 'py-1');
-                navbar.classList.add('py-4');
-            }
-        });
-    </script>
-</body> 
+</body>
 </html>
-
-
